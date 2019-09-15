@@ -25,6 +25,13 @@ public class Item {
 
     public static void crossOffItem(String task) {
         list.get(list.indexOf(task)).status = false;
+
+        System.out.println("Would you like to remove this task?");
+        String reply = scanner.nextLine();
+
+        if (reply.equals("yes")) {
+            list.remove(task);
+        }
     }
 
     // EFFECTS: search myList for task

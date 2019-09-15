@@ -12,17 +12,15 @@ public class ManageTodoList {
     }
 
 
-    // EFFECTS: constructs a ToDoList that is empty
-
     public ManageTodoList() {
         scanner = new Scanner(System.in);
         String command = "";
         String taskName = "";
         String crossOff = "";
 
-        if (newList() == true) {
-            createList();
-        }
+//        if (newList() == true) {
+//            createList();
+//        }
 
         System.out.println(
                 "What would you like to do? [1] add a todo list item, "
