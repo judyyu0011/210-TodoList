@@ -20,17 +20,17 @@ public class Item {
     public static void addItem(String taskName) {
         Item item = new Item();
         item.task = taskName;
-        list.add(item);
+//        list.add(item);
     }
 
     public static void crossOffItem(String task) {
-        list.get(list.indexOf(task)).status = false;
+//        list.get(list.indexOf(task)).status = false;
 
         System.out.println("Would you like to remove this task?");
         String reply = scanner.nextLine();
 
         if (reply.equals("yes")) {
-            list.remove(task);
+//            list.remove(task);
         }
     }
 
@@ -41,11 +41,11 @@ public class Item {
         System.out.println("Enter the task you are looking for");
         name = scanner.nextLine();
 
-        if (list.contains(name)) {
-            System.out.println("Found task");
-        } else {
-            System.out.println("Cannot find task");
-        }
+//        if (list.contains(name)) {
+//            System.out.println("Found task");
+//        } else {
+//            System.out.println("Cannot find task");
+//        }
     }
 
     public void importance(){
