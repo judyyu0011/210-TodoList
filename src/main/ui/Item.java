@@ -21,6 +21,7 @@ public class Item {
         Item item = new Item();
         item.task = taskName;
 //        list.add(item);
+        System.out.println("'" + taskName + "' is added");
     }
 
     public static void crossOffItem(String task) {
@@ -32,6 +33,7 @@ public class Item {
         if (reply.equals("yes")) {
 //            list.remove(task);
         }
+        System.out.println("'" + task + "' is crossed off");
     }
 
     // EFFECTS: search myList for task

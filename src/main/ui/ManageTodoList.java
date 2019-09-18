@@ -13,6 +13,7 @@ public class ManageTodoList {
 
 
     public ManageTodoList() {
+        list = new ArrayList<Item>();
         scanner = new Scanner(System.in);
         String command = "";
         String taskName = "";
@@ -28,34 +29,41 @@ public class ManageTodoList {
 
         command = scanner.nextLine();
         if (command.equals("1")) {
+            System.out.println("You entered '1'");
             System.out.println("Enter the task you would like to add");
             taskName = scanner.nextLine();
+            System.out.println("You would like to add '" + taskName + "'");
             Item.addItem(taskName);
 
         } else if (command.equals("2")) {
-            for (Item i : list) {
-                System.out.println(i);
-            }
+            System.out.println("You entered '2'");
+            printList();
             System.out.println("Which item would you like to cross off?");
             crossOff = scanner.nextLine();
+            System.out.println("You would like to cross off '" + crossOff + "'");
             Item.crossOffItem(crossOff);
 
         } else if (command.equals("3")) {
-            for (Item i : list) {
-                System.out.println(i);
-            }
+            System.out.println("You entered '3'");
+            printList();
+        }
+    }
+
+    public void printList() {
+        for (Item i : list) {
+            System.out.println(i);
         }
     }
 
     //Makes a new list
-    public void createList() {
-        list = new ArrayList<Item>();
-    }
+//    public void createList() {
+//        list = new ArrayList<Item>();
+//    }
 
     //EFFECTS: ask user if want to construct a new list
     public static boolean newList() {
         return false; //stub
     }
-
 }
+
 
