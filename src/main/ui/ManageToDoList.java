@@ -19,7 +19,7 @@ public class ManageToDoList {
 
         while (true) {
             System.out.println("What would you like to do? [1] add a task, "
-                            + "[2] remove a task, [3] print list, [4] quit");
+                            + "[2] remove a task, [3] show all tasks, [4] quit");
             option = scanner.nextLine();
             System.out.println("You selected " + option);
 
@@ -27,10 +27,11 @@ public class ManageToDoList {
                 addTaskToList();
 
             } else if (option.equals("2")) {
+                myList.printList();
                 removeTaskFromList();
 
             } else if (option.equals("3")) {
-                myList.printList(); // TODO: printList does not work
+                myList.printList();
 
             } else if (option.equals("4")) {
                 break;
@@ -53,11 +54,9 @@ public class ManageToDoList {
     private void removeTaskFromList() {
         String removeTaskName = "";
 
-      //  myList.printList();
         System.out.println("Enter the task you would like to remove");
         removeTaskName = scanner.nextLine();
         myList.removeTask(removeTaskName);
-        System.out.println("'" + removeTaskName + "' has been removed");
     }
 
     public static void main(String[] args) {

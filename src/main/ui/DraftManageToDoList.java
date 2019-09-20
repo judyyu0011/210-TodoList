@@ -25,8 +25,8 @@
 ////        }
 //
 //        System.out.println(
-//                "What would you like to do? [1] add a todo list item, "
-//                        + "[2] cross off a todo list item, [3] show all items");
+//                "What would you like to do? [1] add a to do list item, "
+//                        + "[2] cross off a to do list item, [3] show all items");
 //
 //        command = scanner.nextLine();
 //        if (command.equals("1")) {
