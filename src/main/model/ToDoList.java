@@ -6,6 +6,7 @@ public class ToDoList {
 
     private ArrayList<Task> taskList;
 
+    // EFFECTS: list is empty
     public ToDoList() {
         taskList = new ArrayList<>();
     }
@@ -16,15 +17,14 @@ public class ToDoList {
         if (doesNotContainTask(taskName)) {
             t.name = taskName;
             taskList.add(t);
-            System.out.println("'" + taskName + "' has been added");
+            taskIsAdded(taskName);
         } else {
-            System.out.println("This task already exists, it cannot be added");
+            taskCannotBeAdded();
         }
     }
 
-
     // MODIFIES: this
-    // EFFECTS: remove task from List, if task is in list
+    // EFFECTS: remove the task from the list, if the task is in the list
     public void removeTask(String taskName) {
         if (doesNotContainTask(taskName)) {
             System.out.println("This task is not in your list");
@@ -38,8 +38,9 @@ public class ToDoList {
         }
     }
 
-    // EFFECTS: return true if the list does not contain the task, otherwise return false
-    private boolean doesNotContainTask(String taskName) {
+    // EFFECTS: return true if the list does not contain the task,
+    //          otherwise return false
+    public boolean doesNotContainTask(String taskName) {
         for (Task t : taskList) {
             if (t.name.equals(taskName)) {
                 return false;
@@ -48,9 +49,8 @@ public class ToDoList {
         return true;
     }
 
-    // REQUIRES:
-    // MODIFIES:
-    // EFFECTS: print list if there are tasks in list, otherwise say there is no task
+    // EFFECTS: print the list if there are tasks in the list,
+    //          otherwise say there is no task
     public void printList() {
         System.out.println("Your current ToDoList tasks are as followed:");
         if (taskList.size() == 0) {
@@ -59,7 +59,21 @@ public class ToDoList {
         for (Task t : taskList) {
             t.printTask();
         }
+    }
 
+    // EFFECTS: prints that the task is added
+    private void taskIsAdded(String taskName) {
+        System.out.println("'" + taskName + "' has been added");
+    }
+
+    // EFFECTS: prints that the task cannot be added
+    private void taskCannotBeAdded() {
+        System.out.println("This task already exists, it cannot be added");
+    }
+
+    // EFFECTS: returns the size of the list
+    public int size() {
+        return taskList.size();
     }
 }
 

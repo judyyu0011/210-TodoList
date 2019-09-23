@@ -8,14 +8,17 @@ public class ManageToDoList {
 
     private Scanner scanner;
     private String option = "";
-    ToDoList myList = new ToDoList();
+    private ToDoList myList = new ToDoList();
 
     public ManageToDoList() {
         scanner = new Scanner(System.in);
         processOptions();
     }
 
-    public void processOptions() {
+    // MODIFIES: this
+    // EFFECTS: prompt user for input, then add task, remove task, print list,
+    //          or quit given user input
+    private void processOptions() {
 
         while (true) {
             System.out.println("What would you like to do? [1] add a task, "
@@ -42,8 +45,10 @@ public class ManageToDoList {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: scan for user input, then add task to the list
     private void addTaskToList() {
-        String taskName = "";
+        String taskName;
         Task newTask = new Task();
 
         System.out.println("Enter the task you would like to add");
@@ -53,17 +58,14 @@ public class ManageToDoList {
         myList.addTask(taskName, newTask);
     }
 
+    // MODIFIES: this
+    // EFFECTS: scan for user input, then remove task from the list
     private void removeTaskFromList() {
-        String removeTaskName = "";
-        Task newTask = new Task();
+        String removeTaskName;
 
         System.out.println("Enter the task you would like to remove");
         removeTaskName = scanner.nextLine();
         myList.removeTask(removeTaskName);
-    }
-
-    public static void main(String[] args) {
-        new ManageToDoList();
     }
 
 }
