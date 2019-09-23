@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class ManageToDoList {
 
     private Scanner scanner;
+    private String option = "";
     ToDoList myList = new ToDoList();
 
     public ManageToDoList() {
@@ -15,7 +16,6 @@ public class ManageToDoList {
     }
 
     public void processOptions() {
-        String option = "";
 
         while (true) {
             System.out.println("What would you like to do? [1] add a task, "
@@ -35,24 +35,27 @@ public class ManageToDoList {
 
             } else if (option.equals("4")) {
                 break;
+
+            } else {
+                System.out.println("This is not a valid option");
             }
         }
     }
 
     private void addTaskToList() {
         String taskName = "";
-
         Task newTask = new Task();
+
         System.out.println("Enter the task you would like to add");
         taskName = scanner.nextLine();
         System.out.println("You would like to add '" + taskName + "'");
-        newTask.name = taskName;
-        myList.addTask(newTask);
-        System.out.println("'" + taskName + "' has been added");
+
+        myList.addTask(taskName, newTask);
     }
 
     private void removeTaskFromList() {
         String removeTaskName = "";
+        Task newTask = new Task();
 
         System.out.println("Enter the task you would like to remove");
         removeTaskName = scanner.nextLine();

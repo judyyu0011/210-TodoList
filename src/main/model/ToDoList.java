@@ -10,19 +10,36 @@ public class ToDoList {
         taskList = new ArrayList<>();
     }
 
-    public void addTask(Task t) {
-        taskList.add(t);
+    public void addTask(String s, Task t) {
+        if (!containsTask(s)) {
+            t.name = s;
+            taskList.add(t);
+            System.out.println("'" + s + "' has been added");
+        } else {
+            System.out.println("This task already exists");
+        }
     }
 
     public void removeTask(String taskName) {
+        if (!containsTask(taskName)) {
+            System.out.println("This task is not in your list");
+        }
         for (Task t : taskList) {
             if (t.name.equals(taskName)) {
                 taskList.remove(t);
-                System.out.println("'" + t + "' has been removed");
-            } else {
-                System.out.println("This task is not in your list");
+                System.out.println("'" + t.name + "' has been removed");
+                break;
             }
         }
+    }
+
+    public boolean containsTask(String taskName) {
+        for (Task t : taskList) {
+            if (t.name.equals(taskName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void printList() {
