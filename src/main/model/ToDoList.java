@@ -10,18 +10,23 @@ public class ToDoList {
         taskList = new ArrayList<>();
     }
 
-    public void addTask(String s, Task t) {
-        if (!containsTask(s)) {
-            t.name = s;
+    // MODIFIES: this
+    // EFFECTS: add task to ToDoList, if task is not already in list
+    public void addTask(String taskName, Task t) {
+        if (doesNotContainTask(taskName)) {
+            t.name = taskName;
             taskList.add(t);
-            System.out.println("'" + s + "' has been added");
+            System.out.println("'" + taskName + "' has been added");
         } else {
-            System.out.println("This task already exists");
+            System.out.println("This task already exists, it cannot be added");
         }
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: remove task from List, if task is in list
     public void removeTask(String taskName) {
-        if (!containsTask(taskName)) {
+        if (doesNotContainTask(taskName)) {
             System.out.println("This task is not in your list");
         }
         for (Task t : taskList) {
@@ -33,22 +38,25 @@ public class ToDoList {
         }
     }
 
-    public boolean containsTask(String taskName) {
+    // EFFECTS: return true if the list does not contain the task, otherwise return false
+    private boolean doesNotContainTask(String taskName) {
         for (Task t : taskList) {
             if (t.name.equals(taskName)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
+    // REQUIRES:
+    // MODIFIES:
+    // EFFECTS: print list if there are tasks in list, otherwise say there is no task
     public void printList() {
         System.out.println("Your current ToDoList tasks are as followed:");
         if (taskList.size() == 0) {
             System.out.println("There is no task in the list");
         }
-        for (int i = 0; i < taskList.size(); i++) {
-            Task t = taskList.get(i);
+        for (Task t : taskList) {
             t.printTask();
         }
 
