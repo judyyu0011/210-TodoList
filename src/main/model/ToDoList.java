@@ -1,5 +1,6 @@
 package model;
 
+
 import java.util.ArrayList;
 
 public class ToDoList {
@@ -60,6 +61,11 @@ public class ToDoList {
             t.printTask();
         }
     }
+
+//    @Override
+//    public String toString() {
+//        return "hi";
+//    }
 
     // EFFECTS: prints that the task is added
     private void taskIsAdded(String taskName) {
