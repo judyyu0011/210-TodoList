@@ -93,8 +93,6 @@ public class TestToDoList {
         assertEquals(1, testToDoList.size());
     }
 
-
-
     @Test
     public void testDoesNotContainTask() {
         assertEquals(0, testToDoList.size());
