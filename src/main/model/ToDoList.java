@@ -8,7 +8,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ToDoList implements Loadable, Saveable {
@@ -92,13 +91,13 @@ public class ToDoList implements Loadable, Saveable {
 
     @Override
     public void load() throws IOException {
-//        taskList = new ArrayList<>();
+        taskList = new ArrayList<>();
 
         List<String> lines = Files.readAllLines(Paths.get("TodoListData"));
-//        PrintWriter writer = new PrintWriter("TodoListData","UTF-8");
         for (String line : lines) {
             Task t = new Task();
             t.setName(line);
+            taskList.add(t);
 //            ArrayList<String> partsOfLine = splitOnSpace(line);
 //            t.setName(partsOfLine.get(0));
         }
@@ -116,7 +115,6 @@ public class ToDoList implements Loadable, Saveable {
         PrintWriter writer = new PrintWriter("TodoListData", "UTF-8");
         System.out.println("Your file contains:");
         for (Task t : taskList) {
-//            model.Task task = taskList.get(i);
             if (t == null) {
                 lines.add("N/A");
                 System.out.println("N/A");
@@ -131,4 +129,5 @@ public class ToDoList implements Loadable, Saveable {
         writer.close();
     }
 }
+
 
