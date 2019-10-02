@@ -2,21 +2,21 @@ package Test;
 
 import model.Task;
 import model.ToDoList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestToDoList {
     ToDoList testToDoList;
     Task myTask;
     private model.Task Task;
 
-    @Before
+    @BeforeEach
     public void setup(){
         testToDoList = new ToDoList();
         myTask = new Task();
