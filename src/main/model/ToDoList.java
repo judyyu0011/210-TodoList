@@ -1,6 +1,5 @@
 package model;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -123,7 +122,7 @@ public class ToDoList implements Loadable, Saveable {
                 System.out.println(t.getName());
             }
         }
-        for (String line: lines) {
+        for (String line : lines) {
             writer.println(line);
         }
         writer.close();

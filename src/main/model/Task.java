@@ -1,7 +1,6 @@
 package model;
 
 public class Task {
-
     String name;
 
     public Task() {
@@ -22,7 +21,5 @@ public class Task {
     public void printTask() {
         System.out.println(getName());
     }
-
-//TODO: add number paramter to task
 
 }
