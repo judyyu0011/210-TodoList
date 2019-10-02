@@ -2,11 +2,11 @@ package Test;
 
 import model.Task;
 import model.ToDoList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTask {
     ToDoList testToDoList = new ToDoList();
