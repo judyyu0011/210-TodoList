@@ -89,10 +89,10 @@ public class ToDoList implements Loadable, Saveable {
     }
 
     @Override
-    public void load() throws IOException {
+    public void load(String file) throws IOException {
         taskList = new ArrayList<>();
 
-        List<String> lines = Files.readAllLines(Paths.get("TodoListData"));
+        List<String> lines = Files.readAllLines(Paths.get(file));
         for (String line : lines) {
             Task t = new Task();
             t.setName(line);
@@ -110,9 +110,9 @@ public class ToDoList implements Loadable, Saveable {
 //    }
 
     @Override
-    public void save() throws FileNotFoundException, UnsupportedEncodingException {
+    public void save(String file) throws FileNotFoundException, UnsupportedEncodingException {
         List<String> lines = new ArrayList<>();
-        PrintWriter writer = new PrintWriter("TodoListData", "UTF-8");
+        PrintWriter writer = new PrintWriter(file, "UTF-8");
         System.out.println("Your file contains:");
         for (Task t : taskList) {
             if (t == null) {
