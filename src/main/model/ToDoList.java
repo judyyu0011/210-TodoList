@@ -99,6 +99,7 @@ public class ToDoList implements Loadable, Saveable {
             taskList.add(t);
 //            ArrayList<String> partsOfLine = splitOnSpace(line);
 //            t.setName(partsOfLine.get(0));
+            //
         }
         printList();
     }
