@@ -2,6 +2,10 @@ package ui;
 
 import model.Task;
 import model.ToDoList;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class ManageToDoList {
@@ -10,16 +14,16 @@ public class ManageToDoList {
     private String option = "";
     private ToDoList myList = new ToDoList();
 
-    public ManageToDoList() {
+    public ManageToDoList() throws IOException {
         scanner = new Scanner(System.in);
-        processOptions();
+        myList.load();
+        run();
     }
 
     // MODIFIES: this
     // EFFECTS: prompt user for input, then add task, remove task, print list,
     //          or quit given user input
-    private void processOptions() {
-
+    private void run() throws FileNotFoundException, UnsupportedEncodingException {
         while (true) {
             System.out.println("What would you like to do? [1] add a task, "
                             + "[2] remove a task, [3] show all tasks, [4] quit");
@@ -37,6 +41,7 @@ public class ManageToDoList {
                 myList.printList();
 
             } else if (option.equals("4")) {
+                myList.save();
                 break;
 
             } else {
@@ -47,7 +52,7 @@ public class ManageToDoList {
 
     // MODIFIES: this
     // EFFECTS: scan for user input, then add task to the list
-    private void addTaskToList() {
+    private void addTaskToList() throws FileNotFoundException, UnsupportedEncodingException {
         String taskName;
         Task newTask = new Task();
 

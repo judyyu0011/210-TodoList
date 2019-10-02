@@ -5,6 +5,10 @@ import model.ToDoList;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import static org.junit.Assert.*;
 
 public class TestToDoList {
@@ -19,7 +23,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testAddTaskNotThere() {
+    public void testAddTaskNotThere() throws FileNotFoundException, UnsupportedEncodingException {
         //check that task is not already there
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("study"));
@@ -31,7 +35,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testDuplicate() {
+    public void testDuplicate() throws FileNotFoundException, UnsupportedEncodingException {
         testToDoList.addTask("study", myTask);
         testToDoList.addTask("study", myTask);
 
@@ -40,7 +44,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testAddMultipleTasks() {
+    public void testAddMultipleTasks() throws FileNotFoundException, UnsupportedEncodingException {
         Task study = new Task();
         Task work = new Task();
         Task exercise = new Task();
@@ -58,7 +62,7 @@ public class TestToDoList {
 
 
     @Test
-    public void testRemoveTaskThere() {
+    public void testRemoveTaskThere() throws FileNotFoundException, UnsupportedEncodingException {
         testToDoList.addTask("study", myTask);
         assertFalse(testToDoList.doesNotContainTask("study"));
 
@@ -80,7 +84,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testRemoveWrongTask() {
+    public void testRemoveWrongTask() throws FileNotFoundException, UnsupportedEncodingException {
         testToDoList.addTask("study", myTask);
         assertFalse(testToDoList.doesNotContainTask("study"));
         assertEquals(1, testToDoList.size());
@@ -98,7 +102,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testContainTask() {
+    public void testContainTask() throws FileNotFoundException, UnsupportedEncodingException {
         testToDoList.addTask("study", myTask);
         assertEquals(1, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("study"));

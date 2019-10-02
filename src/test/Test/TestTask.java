@@ -3,6 +3,9 @@ package Test;
 import model.Task;
 import model.ToDoList;
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class TestTask {
@@ -10,7 +13,7 @@ public class TestTask {
     Task myTask = new Task();
 
     @Test
-    public void testGetName() {
+    public void testGetName() throws IOException {
         testToDoList.addTask("study", myTask);
         assertFalse(testToDoList.doesNotContainTask("study"));
 

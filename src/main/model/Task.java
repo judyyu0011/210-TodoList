@@ -13,8 +13,16 @@ public class Task {
         return name;
     }
 
+    // setters
+    public void setName(String n) {
+        this.name = n;
+    }
+
     // EFFECTS: print out the task's information
     public void printTask() {
         System.out.println(getName());
     }
+
+
+
 }

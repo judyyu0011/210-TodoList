@@ -1,9 +1,17 @@
 package model;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class ToDoList {
+public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> taskList;
 
@@ -14,7 +22,7 @@ public class ToDoList {
 
     // MODIFIES: this
     // EFFECTS: add task to ToDoList, if task is not already in list
-    public void addTask(String taskName, Task t) {
+    public void addTask(String taskName, Task t) throws FileNotFoundException, UnsupportedEncodingException {
         if (doesNotContainTask(taskName)) {
             t.name = taskName;
             taskList.add(t);
@@ -80,6 +88,47 @@ public class ToDoList {
     // EFFECTS: returns the size of the list
     public int size() {
         return taskList.size();
+    }
+
+    @Override
+    public void load() throws IOException {
+//        taskList = new ArrayList<>();
+
+        List<String> lines = Files.readAllLines(Paths.get("TodoListData"));
+//        PrintWriter writer = new PrintWriter("TodoListData","UTF-8");
+        for (String line : lines) {
+            Task t = new Task();
+            t.setName(line);
+//            ArrayList<String> partsOfLine = splitOnSpace(line);
+//            t.setName(partsOfLine.get(0));
+        }
+        printList();
+    }
+
+//    public static ArrayList<String> splitOnSpace(String line) {
+//        String[] splits = line.split(" ");
+//        return new ArrayList<>(Arrays.asList(splits));
+//    }
+
+    @Override
+    public void save() throws FileNotFoundException, UnsupportedEncodingException {
+        List<String> lines = new ArrayList<>();
+        PrintWriter writer = new PrintWriter("TodoListData", "UTF-8");
+        System.out.println("Your file contains:");
+        for (Task t : taskList) {
+//            model.Task task = taskList.get(i);
+            if (t == null) {
+                lines.add("N/A");
+                System.out.println("N/A");
+            } else if (t != null) {
+                lines.add(t.getName());
+                System.out.println(t.getName());
+            }
+        }
+        for (String line: lines) {
+            writer.println(line);
+        }
+        writer.close();
     }
 }
 
