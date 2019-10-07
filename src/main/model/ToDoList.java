@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ToDoList implements Loadable, Saveable {
@@ -18,16 +19,19 @@ public class ToDoList implements Loadable, Saveable {
         taskList = new ArrayList<>();
     }
 
-    // MODIFIES: this
-    // EFFECTS: add task to ToDoList, if task is not already in list
-    public void addTask(String taskName, Task t) throws FileNotFoundException, UnsupportedEncodingException {
-        if (doesNotContainTask(taskName)) {
-            t.name = taskName;
-            taskList.add(t);
-            taskIsAdded(taskName);
-        } else {
-            taskCannotBeAdded();
-        }
+
+    public void addSchoolTask(String name, String course, String type, Task t) {
+        t = new SchoolTask(name, course, type);
+        t.setType("school");
+        taskList.add(t);
+        taskIsAdded(name);
+    }
+
+    public void addGeneralTask(String name, String category, String type, Task t) {
+        t = new GeneralTask(name, category, type);
+        t.setType("general");
+        taskList.add(t);
+        taskIsAdded(name);
     }
 
     // MODIFIES: this
@@ -79,7 +83,7 @@ public class ToDoList implements Loadable, Saveable {
     }
 
     // EFFECTS: prints that the task cannot be added
-    private void taskCannotBeAdded() {
+    public void taskCannotBeAdded() {
         System.out.println("This task already exists, it cannot be added");
     }
 
@@ -92,22 +96,33 @@ public class ToDoList implements Loadable, Saveable {
     public void load() throws IOException {
         taskList = new ArrayList<>();
 
-        List<String> lines = Files.readAllLines(Paths.get("TodoListData"));
+        List<String> lines = Files.readAllLines(Paths.get(file));
         for (String line : lines) {
-            Task t = new Task();
-            t.setName(line);
-            taskList.add(t);
-//            ArrayList<String> partsOfLine = splitOnSpace(line);
-//            t.setName(partsOfLine.get(0));
-            //
+            ArrayList<String> partsOfLine = splitOnSpace(line);
+
+            if (partsOfLine.get(2).equals("school")) {
+                Task t = new SchoolTask("","", "");
+                t.course = partsOfLine.get(1);
+                declareNameAndType(partsOfLine, t);
+            } else {
+                Task t = new GeneralTask("","", "");
+                t.category = partsOfLine.get(1);
+                declareNameAndType(partsOfLine, t);
+            }
         }
         printList();
     }
 
-//    public static ArrayList<String> splitOnSpace(String line) {
-//        String[] splits = line.split(" ");
-//        return new ArrayList<>(Arrays.asList(splits));
-//    }
+    private void declareNameAndType(ArrayList<String> partsOfLine, Task t) {
+        t.name = partsOfLine.get(0);
+        t.type = partsOfLine.get(2);
+        taskList.add(t);
+    }
+
+    public static ArrayList<String> splitOnSpace(String line) {
+        String[] splits = line.split(" ");
+        return new ArrayList<>(Arrays.asList(splits));
+    }
 
     @Override
     public void save() throws FileNotFoundException, UnsupportedEncodingException {
@@ -119,10 +134,19 @@ public class ToDoList implements Loadable, Saveable {
                 lines.add("N/A");
                 System.out.println("N/A");
             } else if (t != null) {
-                lines.add(t.getName());
-                System.out.println(t.getName());
+                if (t.type.equals("school")) {
+                    lines.add(t.name + " " + t.course + " " + t.type);
+                    System.out.println(t.name + " " + t.course + " " + t.type);
+                } else {
+                    lines.add(t.name + " " + t.category + " " + t.type);
+                    System.out.println(t.name + " " + t.category + " " + t.type);
+                }
             }
         }
+        write(lines, writer);
+    }
+
+    private void write(List<String> lines, PrintWriter writer) {
         for (String line : lines) {
             writer.println(line);
         }
