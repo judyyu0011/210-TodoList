@@ -16,7 +16,7 @@ public class ManageToDoList {
 
     public ManageToDoList() throws IOException {
         scanner = new Scanner(System.in);
-        myList.load();
+        myList.load("TodoListData");
         run();
     }
 
@@ -25,8 +25,7 @@ public class ManageToDoList {
     //          or quit given user inpt
     public void run() throws IOException {
         while (true) {
-            System.out.println("What would you like to do? [1] add a task, "
-                            + "[2] remove a task, [3] show all tasks, [4] quit");
+            giveUserOptions();
             option = scanner.nextLine();
             System.out.println("You selected " + option);
 
@@ -41,13 +40,18 @@ public class ManageToDoList {
                 myList.printList();
 
             } else if (option.equals("4")) {
-                myList.save();
+                myList.save("TodoListData");
                 break;
 
             } else {
                 System.out.println("This is not a valid option");
             }
         }
+    }
+
+    private void giveUserOptions() {
+        System.out.println("What would you like to do? [1] add a task, "
+                        + "[2] remove a task, [3] show all tasks, [4] quit");
     }
 
     // MODIFIES: this
@@ -72,5 +76,4 @@ public class ManageToDoList {
         removeTaskName = scanner.nextLine();
         myList.removeTask(removeTaskName);
     }
-
 }
