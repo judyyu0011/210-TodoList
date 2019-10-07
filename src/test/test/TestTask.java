@@ -22,8 +22,12 @@ public class TestTask {
         assertEquals("essay", mySchoolTask.getName()) ;
     }
 
-        assertEquals(testToDoList.size(), 1);
-        assertEquals(myTask.getName(), "study");
-    }
+//    @Test
+//    public void testGetCategory() {
+//        testToDoList.addGeneralTask("run","exercise", "general", myGeneralTask);
+//        assertFalse(testToDoList.doesNotContainTask("run"));
+//        assertEquals("run", myGeneralTask.getCategory());
+    //
+//    }
 }
 //
