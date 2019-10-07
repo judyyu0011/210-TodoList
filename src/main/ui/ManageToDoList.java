@@ -1,5 +1,7 @@
 package ui;
 
+import model.GeneralTask;
+import model.SchoolTask;
 import model.Task;
 import model.ToDoList;
 
@@ -12,7 +14,12 @@ public class ManageToDoList {
 
     private Scanner scanner;
     private String option = "";
+    String name;
+
     private ToDoList myList = new ToDoList();
+    Task newGeneralTask = new GeneralTask("","", "");
+    Task newSchoolTask = new SchoolTask("","", "");
+
 
     public ManageToDoList() throws IOException {
         scanner = new Scanner(System.in);
@@ -56,16 +63,39 @@ public class ManageToDoList {
 
     // MODIFIES: this
     // EFFECTS: scan for user input, then add task to the list
-    private void addTaskToList() throws FileNotFoundException, UnsupportedEncodingException {
-        String taskName;
-        Task newTask = new Task();
+    public void addTaskToList() {
 
         System.out.println("Enter the task you would like to add");
-        taskName = scanner.nextLine();
-        System.out.println("You would like to add '" + taskName + "'");
+        name = scanner.nextLine();
+        System.out.println("You would like to add '" + name + "'");
 
-        myList.addTask(taskName, newTask);
+        if (myList.doesNotContainTask(name)) {
+            addTask();
+        } else {
+            myList.taskCannotBeAdded();
+        }
     }
+
+    public void addTask() {
+        String course;
+        String category;
+        String type = "";
+
+        System.out.println("Is this a school task? yes or no");
+        option = scanner.nextLine();
+        if (option.equals("yes")) {
+            System.out.println("What course is this task for?");
+            course = scanner.nextLine();
+            myList.addSchoolTask(name, course, type, newSchoolTask);
+        } else if (option.equals("no")) {
+            System.out.println("What category is this task in?");
+            category = scanner.nextLine();
+            myList.addGeneralTask(name, category, type, newGeneralTask);
+        } else {
+            System.out.println("This is not a valid option");
+        }
+    }
+
 
     // MODIFIES: this
     // EFFECTS: scan for user input, then remove task from the list
