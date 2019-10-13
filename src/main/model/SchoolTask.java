@@ -2,8 +2,8 @@ package model;
 
 public class SchoolTask extends Task {
 
-    public SchoolTask(String name, String course,  String type) {
-        super(name, type);
+    public SchoolTask(String name, String course, Boolean state, String type) {
+        super(name, type, state);
         this.course = course;
     }
 
@@ -22,7 +22,16 @@ public class SchoolTask extends Task {
     // EFFECTS: print out the task's information
     @Override
     public void printTask() {
-        System.out.println("name: " + getName() + "; course: " + getCourse() + "; type: " + getType());
+        String state;
+
+        if (getState()) {
+            state = "completed";
+        } else {
+            state = "not completed";
+        }
+
+        System.out.println("name: " + getName() + "; course: " + getCourse() + "; state: " + state
+                + "; type: " + getType());
     }
 
 

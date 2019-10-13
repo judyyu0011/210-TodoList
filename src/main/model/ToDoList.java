@@ -20,19 +20,41 @@ public class ToDoList implements Loadable, Saveable {
     }
 
 
-    public void addSchoolTask(String name, String course, String type, Task t) {
-        t = new SchoolTask(name, course, type);
+    // MODIFIES: this
+    // EFFECTS: add a SchoolTask to the todolist
+    public void addSchoolTask(String name, String course, Boolean state, String type, Task t) {
+        t = new SchoolTask(name, course, state, type);
         t.setType("school");
         taskList.add(t);
         taskIsAdded(name);
     }
 
-    public void addGeneralTask(String name, String category, String type, Task t) {
-        t = new GeneralTask(name, category, type);
+    // MODIFIES: this
+    // EFFECTS: add a GeneralTask to the todolist
+    public void addGeneralTask(String name, String category, Boolean state, String type, Task t) {
+        t = new GeneralTask(name, category, state, type);
         t.setType("general");
         taskList.add(t);
         taskIsAdded(name);
     }
+
+    public void markComplete(String taskName) {
+        if (doesNotContainTask(taskName)) {
+            System.out.println("This task is not in your list");
+        }
+        for (Task t : taskList) {
+            if (t.name.equals(taskName)) {
+                if (t.state) {
+                    System.out.println("This task has already been marked completed");
+                    break;
+                }
+                t.setStateTrue();
+                System.out.println("'" + t.name + "' has been marked completed");
+                break;
+            }
+        }
+    }
+
 
     // MODIFIES: this
     // EFFECTS: remove the task from the list, if the task is in the list
@@ -92,6 +114,10 @@ public class ToDoList implements Loadable, Saveable {
         return taskList.size();
     }
 
+    public Task get(int i) {
+        return taskList.get(i);
+    }
+
     @Override
     public void load(String file) throws IOException {
         taskList = new ArrayList<>();
@@ -101,21 +127,22 @@ public class ToDoList implements Loadable, Saveable {
             ArrayList<String> partsOfLine = splitOnSpace(line);
 
             if (partsOfLine.get(2).equals("school")) {
-                Task t = new SchoolTask("","", "");
+                Task t = new SchoolTask("","", false, "");
                 t.course = partsOfLine.get(1);
-                declareNameAndType(partsOfLine, t);
+                declareNameStateType(partsOfLine, t);
             } else {
-                Task t = new GeneralTask("","", "");
+                Task t = new GeneralTask("","", false,"");
                 t.category = partsOfLine.get(1);
-                declareNameAndType(partsOfLine, t);
+                declareNameStateType(partsOfLine, t);
             }
         }
         printList();
     }
 
-    private void declareNameAndType(ArrayList<String> partsOfLine, Task t) {
+    private void declareNameStateType(ArrayList<String> partsOfLine, Task t) {
         t.name = partsOfLine.get(0);
-        t.type = partsOfLine.get(2);
+        t.state = Boolean.parseBoolean(partsOfLine.get(2));
+        t.type = partsOfLine.get(3);
         taskList.add(t);
     }
 
@@ -135,11 +162,11 @@ public class ToDoList implements Loadable, Saveable {
                 System.out.println("N/A");
             } else if (t != null) {
                 if (t.type.equals("school")) {
-                    lines.add(t.name + " " + t.course + " " + t.type);
-                    System.out.println(t.name + " " + t.course + " " + t.type);
+                    lines.add(t.name + " " + t.course + " " + t.state + " " + t.type);
+                    System.out.println(t.name + " " + t.course + " " + t.state + " " + t.type);
                 } else {
-                    lines.add(t.name + " " + t.category + " " + t.type);
-                    System.out.println(t.name + " " + t.category + " " + t.type);
+                    lines.add(t.name + " " + t.category + " " + t.state + " " + t.type);
+                    System.out.println(t.name + " " + t.category + " " + t.state + " " + t.type);
                 }
             }
         }
@@ -152,7 +179,5 @@ public class ToDoList implements Loadable, Saveable {
         }
         writer.close();
     }
+
 }
-
-
-//

@@ -1,9 +1,5 @@
-package test;
+package model;
 
-import model.GeneralTask;
-import model.SchoolTask;
-import model.Task;
-import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +18,8 @@ public class TestToDoList {
     @BeforeEach
     public void setup(){
         testToDoList = new ToDoList();
-        myGeneralTask = new GeneralTask("","", "");
-        mySchoolTask = new SchoolTask("","", "");
+        myGeneralTask = new GeneralTask("","", false, "");
+        mySchoolTask = new SchoolTask("","", false, "");
     }
 
     @Test
@@ -32,7 +28,7 @@ public class TestToDoList {
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("run"));
         //insert task into list
-        testToDoList.addGeneralTask("run", "exercise", "general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise", false, "general", myGeneralTask);
         //check that task is in list once
         assertEquals(1, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("run"));
@@ -44,7 +40,7 @@ public class TestToDoList {
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("hw"));
         //insert task into list
-        testToDoList.addSchoolTask("hw", "cpsc", "school", mySchoolTask);
+        testToDoList.addSchoolTask("hw", "cpsc", false, "school", mySchoolTask);
         //check that task is in list once
         assertEquals(1, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("hw"));
@@ -61,14 +57,14 @@ public class TestToDoList {
 
     @Test
     public void testAddMultipleTasks() throws FileNotFoundException, UnsupportedEncodingException {
-        Task essay = new SchoolTask("","", "");
-        Task eat = new GeneralTask("","", "");
-        Task exercise = new GeneralTask("","", "");
+        Task essay = new SchoolTask("","", false,"");
+        Task eat = new GeneralTask("","", false,"");
+        Task exercise = new GeneralTask("","", false,"");
 
         assertEquals(0, testToDoList.size());
-        testToDoList.addSchoolTask("essay", "school","ENGL112", essay);
-        testToDoList.addGeneralTask("eat", "general","everday", eat);
-        testToDoList.addGeneralTask("run", "general","exercise", exercise);
+        testToDoList.addSchoolTask("essay", "school",false,"ENGL112", essay);
+        testToDoList.addGeneralTask("eat", "general",false,"everday", eat);
+        testToDoList.addGeneralTask("run", "general",false,"exercise", exercise);
 
         assertEquals(3, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("essay"));
@@ -78,8 +74,29 @@ public class TestToDoList {
 
 
     @Test
-    public void testRemoveTaskThere() throws FileNotFoundException, UnsupportedEncodingException {
-        testToDoList.addGeneralTask("run", "exercise", "general", myGeneralTask);
+    public void testMarkComplete() {
+        testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
+        assertFalse(testToDoList.doesNotContainTask("run"));
+        assertFalse(testToDoList.get(0).getState());
+
+        testToDoList.markComplete("run");
+
+        assertTrue(testToDoList.get(0).getState());
+    }
+
+    @Test
+    public void testMarkCompleteNotThere() {
+        assertTrue(testToDoList.doesNotContainTask("study"));
+        assertEquals(0, testToDoList.size());
+
+        testToDoList.markComplete("study");
+
+        assertTrue(testToDoList.doesNotContainTask("study"));
+    }
+
+    @Test
+    public void testRemoveTaskThere() {
+        testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
         assertFalse(testToDoList.doesNotContainTask("run"));
 
         testToDoList.removeTask("run");
@@ -101,7 +118,7 @@ public class TestToDoList {
 
     @Test
     public void testRemoveWrongTask() throws FileNotFoundException, UnsupportedEncodingException {
-        testToDoList.addSchoolTask("hw", "cpsc", "school", mySchoolTask);
+        testToDoList.addSchoolTask("hw", "cpsc", false,"school", mySchoolTask);
         assertFalse(testToDoList.doesNotContainTask("hw"));
         assertEquals(1, testToDoList.size());
 
@@ -133,12 +150,12 @@ public class TestToDoList {
     public void testSaveAndLoad() throws IOException {
         ToDoList testSaveList = new ToDoList();
 
-        Task essay = new SchoolTask("","", "");
-        Task eat = new GeneralTask("","", "");
-        Task exercise = new GeneralTask("","", "");
-        testToDoList.addSchoolTask("essay", "school","ENGL112", essay);
-        testToDoList.addGeneralTask("eat", "general","everday", eat);
-        testToDoList.addGeneralTask("run", "general","exercise", exercise);
+        Task essay = new SchoolTask("","", false,"");
+        Task eat = new GeneralTask("","", false,"");
+        Task exercise = new GeneralTask("","", false,"");
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
+        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
+        testToDoList.addGeneralTask("run", "exercise",false,"general", exercise);
 
         testToDoList.save("testfile1");
 
