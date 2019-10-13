@@ -1,5 +1,8 @@
 package model;
 
+import exceptions.CannotAlterTask;
+import exceptions.CannotFindTask;
+import exceptions.TooManyTasksIncomplete;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -62,9 +65,9 @@ public class TestToDoList {
         Task exercise = new GeneralTask("","", false,"");
 
         assertEquals(0, testToDoList.size());
-        testToDoList.addSchoolTask("essay", "school",false,"ENGL112", essay);
-        testToDoList.addGeneralTask("eat", "general",false,"everday", eat);
-        testToDoList.addGeneralTask("run", "general",false,"exercise", exercise);
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
+        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
+        testToDoList.addGeneralTask("run", "exercise",false,"general", exercise);
 
         assertEquals(3, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("essay"));
@@ -74,7 +77,7 @@ public class TestToDoList {
 
 
     @Test
-    public void testMarkComplete() {
+    public void testMarkComplete() throws CannotAlterTask {
         testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
         assertFalse(testToDoList.doesNotContainTask("run"));
         assertFalse(testToDoList.get(0).getState());
@@ -85,47 +88,101 @@ public class TestToDoList {
     }
 
     @Test
-    public void testMarkCompleteNotThere() {
-        assertTrue(testToDoList.doesNotContainTask("study"));
-        assertEquals(0, testToDoList.size());
+    public void testMarkCompleteTaskAlreadyComplete() {
 
-        testToDoList.markComplete("study");
+        myGeneralTask = new GeneralTask("run","exercise",true,"general");
+        testToDoList.addGeneralTask("run", "exercise",true,"general", myGeneralTask);
+        assertTrue(myGeneralTask.getState());
+        try {
+            testToDoList.markComplete("run");
+            fail("Exception was not thrown");
+        } catch (CannotAlterTask cannotAlterTask) {
+            //expected
+        }
 
-        assertTrue(testToDoList.doesNotContainTask("study"));
+    }
+
+    @Test
+    public void testMarkCompleteTaskNotComplete() {
+        myGeneralTask = new GeneralTask("run","exercise",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general", myGeneralTask);
+        assertFalse(testToDoList.get(0).state);
+        try {
+            testToDoList.markComplete("run");
+        } catch (CannotAlterTask cannotAlterTask) {
+            fail("No exception should be thrown");
+        }
+        assertTrue(testToDoList.get(0).state);
+    }
+
+    @Test
+    public void testMarkCompleteTaskNotThere() {
+        myGeneralTask = new GeneralTask("run","exercise",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general", myGeneralTask);
+        try {
+            testToDoList.markComplete("hello");
+            fail("Exception was not thrown");
+        } catch (CannotAlterTask cannotAlterTask) {
+            //expected
+        }
+    }
+
+//    @Test
+//    public void testRemoveTaskThere() throws CannotFindTask {
+//        testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
+//        assertFalse(testToDoList.doesNotContainTask("run"));
+//
+//        testToDoList.removeTask("run");
+//
+//        assertTrue(testToDoList.doesNotContainTask("run"));
+//        assertEquals(0, testToDoList.size());
+//    }
+
+    @Test
+    public void testRemoveTaskNotThere() {
+        try {
+            testToDoList.removeTask("hello");
+            fail("Exception was not thrown");
+        } catch (CannotFindTask e) {
+            //expected
+        }
     }
 
     @Test
     public void testRemoveTaskThere() {
-        testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
-        assertFalse(testToDoList.doesNotContainTask("run"));
-
-        testToDoList.removeTask("run");
-
+//        myGeneralTask = new GeneralTask("run","general",false,"exercise");
+        testToDoList.addGeneralTask("run", "general",false,"exercise", myGeneralTask);
+        try {
+            testToDoList.removeTask("run");
+        } catch (CannotFindTask e) {
+            fail("No exception should be thrown");
+        }
         assertTrue(testToDoList.doesNotContainTask("run"));
         assertEquals(0, testToDoList.size());
+
     }
 
-    @Test
-    public void testRemoveTaskNotThere() {
-        assertTrue(testToDoList.doesNotContainTask("study"));
-        assertEquals(0, testToDoList.size());
+//    @Test
+//    public void testRemoveTaskNotThere() throws CannotFindTask {
+//        assertTrue(testToDoList.doesNotContainTask("study"));
+//        assertEquals(0, testToDoList.size());
+//
+//        testToDoList.removeTask("study");
+//
+//        assertTrue(testToDoList.doesNotContainTask("study"));
+//        assertEquals(0, testToDoList.size());
+//    }
 
-        testToDoList.removeTask("study");
-
-        assertTrue(testToDoList.doesNotContainTask("study"));
-        assertEquals(0, testToDoList.size());
-    }
-
-    @Test
-    public void testRemoveWrongTask() throws FileNotFoundException, UnsupportedEncodingException {
-        testToDoList.addSchoolTask("hw", "cpsc", false,"school", mySchoolTask);
-        assertFalse(testToDoList.doesNotContainTask("hw"));
-        assertEquals(1, testToDoList.size());
-
-        testToDoList.removeTask("work");
-        assertEquals(1, testToDoList.size());
-        assertFalse(testToDoList.doesNotContainTask("hw"));
-    }
+//    @Test
+//    public void testRemoveWrongTask() throws CannotFindTask {
+//        testToDoList.addSchoolTask("hw", "cpsc", false,"school", mySchoolTask);
+//        assertFalse(testToDoList.doesNotContainTask("hw"));
+//        assertEquals(1, testToDoList.size());
+//
+//        testToDoList.removeTask("work");
+//        assertEquals(1, testToDoList.size());
+//        assertFalse(testToDoList.doesNotContainTask("hw"));
+//    }
 
     @Test
     public void testDoesNotContainTask() {
@@ -133,12 +190,55 @@ public class TestToDoList {
         assertTrue(testToDoList.doesNotContainTask("study"));
     }
 
-//    @Test
-//    public void testContainTask() throws FileNotFoundException, UnsupportedEncodingException {
-//        testToDoList.addTask("study", myTask);
-//        assertEquals(1, testToDoList.size());
-//        assertFalse(testToDoList.doesNotContainTask("study"));
-//    }
+    @Test
+    public void testTooManyTasksIncomplete() {
+        Task essay = new SchoolTask("","", false,"");
+        Task eat = new GeneralTask("","", false,"");
+        Task run = new GeneralTask("","", false,"");
+        Task hw = new SchoolTask("","",false,"");
+        Task sleep = new GeneralTask("","", false,"");
+        Task project = new SchoolTask("","",false,"");
+
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
+        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
+        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
+        testToDoList.addSchoolTask("hw","210",false,"school",hw);
+        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
+        testToDoList.addSchoolTask("project","110", false,"school",project);
+
+        assertEquals(6, testToDoList.size());
+        try {
+            testToDoList.tooManyTasks();
+            fail("Exception was not thrown");
+        } catch (TooManyTasksIncomplete e) {
+            e.printStackTrace();
+            //expected
+        }
+    }
+
+    @Test
+    public void testNotTooManyTasksIncomplete() {
+        Task essay = new SchoolTask("","", false,"");
+        Task eat = new GeneralTask("","", false,"");
+        Task run = new GeneralTask("","", false,"");
+        Task hw = new SchoolTask("","",false,"");
+        Task sleep = new GeneralTask("","", false,"");
+        Task project = new SchoolTask("","",true,"");
+
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
+        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
+        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
+        testToDoList.addSchoolTask("hw","210",false,"school",hw);
+        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
+        testToDoList.addSchoolTask("project","110", true,"school",project);
+
+        assertEquals(6, testToDoList.size());
+        try {
+            testToDoList.tooManyTasks();
+        } catch (TooManyTasksIncomplete e) {
+            fail("No exception should be thrown");
+        }
+    }
 
     @Test
     public void testPrintEmptyTest() {

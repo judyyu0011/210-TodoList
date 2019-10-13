@@ -3,7 +3,7 @@ package model;
 public class GeneralTask extends Task {
 
     public GeneralTask(String name, String category,  Boolean state, String type) {
-        super(name, type, state);
+        super(name, state, type);
         this.category = category;
     }
 
@@ -13,22 +13,14 @@ public class GeneralTask extends Task {
     }
 
     // setters
-    public void setCategory(String c) {
-        this.category = c;
-    }
+//    public void setCategory(String c) {
+//        this.category = c;
+//    }
 
     // EFFECTS: print out the task's information
     @Override
     public void printTask() {
-        String state;
-
-        if (getState()) {
-            state = "completed";
-        } else {
-            state = "not completed";
-        }
-
-        System.out.println("name: " + getName() + "; category: " + getCategory() + "; state: " + state
+        System.out.println("name: " + getName() + "; category: " + getCategory() + "; state: " + completeOrNot()
                 + "; type: " + getType());
     }
 

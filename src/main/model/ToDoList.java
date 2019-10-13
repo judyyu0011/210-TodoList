@@ -1,5 +1,10 @@
 package model;
 
+import exceptions.CannotAlterTask;
+import exceptions.CannotFindTask;
+import exceptions.TaskAlreadyComplete;
+import exceptions.TooManyTasksIncomplete;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +18,7 @@ import java.util.List;
 public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> taskList;
+    int maxincomplete = 5;
 
     // EFFECTS: list is empty
     public ToDoList() {
@@ -38,15 +44,18 @@ public class ToDoList implements Loadable, Saveable {
         taskIsAdded(name);
     }
 
-    public void markComplete(String taskName) {
+    // MODIFIES: state of a task
+    // EFFECTS: changes state of the task to true if it exists and its state is false
+    public void markComplete(String taskName) throws CannotAlterTask {
         if (doesNotContainTask(taskName)) {
-            System.out.println("This task is not in your list");
+            throw new CannotFindTask();
         }
         for (Task t : taskList) {
             if (t.name.equals(taskName)) {
                 if (t.state) {
-                    System.out.println("This task has already been marked completed");
-                    break;
+                    throw new TaskAlreadyComplete();
+//                    System.out.println("This task has already been marked completed");
+//                    break;
                 }
                 t.setStateTrue();
                 System.out.println("'" + t.name + "' has been marked completed");
@@ -58,9 +67,9 @@ public class ToDoList implements Loadable, Saveable {
 
     // MODIFIES: this
     // EFFECTS: remove the task from the list, if the task is in the list
-    public void removeTask(String taskName) {
+    public void removeTask(String taskName) throws CannotFindTask {
         if (doesNotContainTask(taskName)) {
-            System.out.println("This task is not in your list");
+            throw new CannotFindTask();
         }
         for (Task t : taskList) {
             if (t.name.equals(taskName)) {
@@ -91,6 +100,18 @@ public class ToDoList implements Loadable, Saveable {
         }
         for (Task t : taskList) {
             t.printTask();
+        }
+    }
+
+    public void tooManyTasks() throws TooManyTasksIncomplete {
+        int numincomplete = 0;
+        for (Task t : taskList) {
+            if (!t.state) {
+                numincomplete++;
+            }
+        }
+        if (numincomplete > maxincomplete) {
+            throw new TooManyTasksIncomplete();
         }
     }
 
@@ -126,7 +147,7 @@ public class ToDoList implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
 
-            if (partsOfLine.get(2).equals("school")) {
+            if (partsOfLine.get(3).equals("school")) {
                 Task t = new SchoolTask("","", false, "");
                 t.course = partsOfLine.get(1);
                 declareNameStateType(partsOfLine, t);

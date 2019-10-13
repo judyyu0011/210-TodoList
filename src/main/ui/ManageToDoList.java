@@ -1,5 +1,8 @@
 package ui;
 
+import exceptions.CannotAlterTask;
+import exceptions.CannotFindTask;
+import exceptions.TooManyTasksIncomplete;
 import model.GeneralTask;
 import model.SchoolTask;
 import model.ToDoList;
@@ -54,12 +57,13 @@ public class ManageToDoList {
     }
 
     private void giveUserOptions() {
-        System.out.println("What would you like to do? "
-                + "[1] add a task, "
-                + "[2] mark task as completed, "
-                + "[3] remove a task, "
-                + "[4] show all tasks, "
-                + "[5] quit");
+        System.out.println(" ");
+        System.out.println("What would you like to do? ");
+        System.out.println("[1] add a task, ");
+        System.out.println("[2] mark task as completed, ");
+        System.out.println("[3] remove a task, ");
+        System.out.println("[4] show all tasks, ");
+        System.out.println("[5] quit");
         option = scanner.nextLine();
         System.out.println("You selected " + option);
     }
@@ -73,16 +77,23 @@ public class ManageToDoList {
         System.out.println("You would like to add '" + name + "'");
 
         if (myList.doesNotContainTask(name)) {
-            addTask();
+            try {
+                addTask();
+            } catch (TooManyTasksIncomplete e) {
+                e.printStackTrace();
+                System.out.println("Add unsuccessful, too many incomplete tasks");
+            }
         } else {
             myList.taskCannotBeAdded();
         }
     }
 
-    private void addTask() {
+    public void addTask() throws TooManyTasksIncomplete {
         String course;
         String category;
         String type = "";
+
+        myList.tooManyTasks();
 
         System.out.println("what type of task is this? [school] or [general]");
         option = scanner.nextLine();
@@ -105,7 +116,14 @@ public class ManageToDoList {
         System.out.println("Enter the task you would like to mark complete");
         name = scanner.nextLine();
         System.out.println("You would like to mark '" + name + "' as complete");
-        myList.markComplete(name);
+        try {
+            myList.markComplete(name);
+        } catch (CannotAlterTask e) {
+            e.printStackTrace();
+            System.out.println("This task does not exist or is already complete");
+        } finally {
+            System.out.println("Continuing...");
+        }
     }
 
 
@@ -116,7 +134,14 @@ public class ManageToDoList {
 
         System.out.println("Enter the task you would like to remove");
         name = scanner.nextLine();
-        myList.removeTask(name);
+        try {
+            myList.removeTask(name);
+        } catch (CannotFindTask e) {
+            e.printStackTrace();
+            System.out.println("This task is not in your list");
+        } finally {
+            System.out.println("Continuing...");
+        }
     }
 }
 //
