@@ -18,7 +18,7 @@ import java.util.List;
 public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> taskList;
-    int maxincomplete = 5;
+    private int maxincomplete = 5;
 
     // EFFECTS: list is empty
     public ToDoList() {
@@ -63,6 +63,7 @@ public class ToDoList implements Loadable, Saveable {
             }
         }
     }
+
 
 
     // MODIFIES: this

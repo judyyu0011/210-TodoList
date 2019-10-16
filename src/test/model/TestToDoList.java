@@ -192,18 +192,8 @@ public class TestToDoList {
 
     @Test
     public void testTooManyTasksIncomplete() {
-        Task essay = new SchoolTask("","", false,"");
-        Task eat = new GeneralTask("","", false,"");
-        Task run = new GeneralTask("","", false,"");
-        Task hw = new SchoolTask("","",false,"");
-        Task sleep = new GeneralTask("","", false,"");
+        buildFields();
         Task project = new SchoolTask("","",false,"");
-
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
-        testToDoList.addSchoolTask("hw","210",false,"school",hw);
-        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
         testToDoList.addSchoolTask("project","110", false,"school",project);
 
         assertEquals(6, testToDoList.size());
@@ -218,18 +208,8 @@ public class TestToDoList {
 
     @Test
     public void testNotTooManyTasksIncomplete() {
-        Task essay = new SchoolTask("","", false,"");
-        Task eat = new GeneralTask("","", false,"");
-        Task run = new GeneralTask("","", false,"");
-        Task hw = new SchoolTask("","",false,"");
-        Task sleep = new GeneralTask("","", false,"");
+        buildFields();
         Task project = new SchoolTask("","",true,"");
-
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
-        testToDoList.addSchoolTask("hw","210",false,"school",hw);
-        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
         testToDoList.addSchoolTask("project","110", true,"school",project);
 
         assertEquals(6, testToDoList.size());
@@ -238,6 +218,21 @@ public class TestToDoList {
         } catch (TooManyTasksIncomplete e) {
             fail("No exception should be thrown");
         }
+    }
+
+    public void buildFields() {
+        Task essay = new SchoolTask("","", false,"");
+        Task eat = new GeneralTask("","", false,"");
+        Task run = new GeneralTask("","", false,"");
+        Task hw = new SchoolTask("","",false,"");
+        Task sleep = new GeneralTask("","", false,"");
+
+
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
+        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
+        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
+        testToDoList.addSchoolTask("hw","210",false,"school",hw);
+        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
     }
 
     @Test
