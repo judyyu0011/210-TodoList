@@ -8,6 +8,8 @@ public abstract class Task {
     protected String type;
     protected boolean state;
 
+    protected ToDoList list;
+
     public Task(String name, Boolean state, String type) {
         this.name = name;
         this.state = state;

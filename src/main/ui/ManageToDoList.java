@@ -30,7 +30,7 @@ public class ManageToDoList {
     // MODIFIES: this
     // EFFECTS: prompt user for input, then add task, remove task, print list,
     //          or quit given user inpt
-    public void run() throws IOException {
+    private void run() throws IOException {
         while (true) {
             giveUserOptions();
 
