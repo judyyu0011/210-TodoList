@@ -24,7 +24,7 @@ public class TestExceptions {
     public void testMarkCompleteTaskAlreadyComplete() {
 
         newTask = new GeneralTask("run","general",true,"exercise");
-        testToDoList.addGeneralTask("run", "general",true,"exercise", newTask);
+        testToDoList.addGeneralTask("run", "general",true,"exercise");
         assertTrue(newTask.getState());
         try {
             testToDoList.markComplete("run");
@@ -38,7 +38,7 @@ public class TestExceptions {
     @Test
     public void testMarkCompleteTaskNotComplete() {
         newTask = new GeneralTask("run","general",false,"exercise");
-        testToDoList.addGeneralTask("run", "general",false,"exercise", newTask);
+        testToDoList.addGeneralTask("run", "general",false,"exercise");
         assertFalse(testToDoList.get(0).state);
         try {
             testToDoList.markComplete("run");
@@ -51,7 +51,7 @@ public class TestExceptions {
     @Test
     public void testMarkCompleteTaskNotThere() {
         newTask = new GeneralTask("run","general",false,"exercise");
-        testToDoList.addGeneralTask("run", "general",false,"exercise", newTask);
+        testToDoList.addGeneralTask("run", "general",false,"exercise");
         try {
             testToDoList.markComplete("hello");
             fail("Exception was not thrown");
@@ -73,7 +73,7 @@ public class TestExceptions {
     @Test
     public void testRemoveTaskThere() {
         newTask = new GeneralTask("run","general",false,"exercise");
-        testToDoList.addGeneralTask("run", "general",false,"exercise", newTask);
+        testToDoList.addGeneralTask("run", "general",false,"exercise");
         try {
             testToDoList.removeTask("run");
         } catch (CannotFindTask e) {
@@ -85,7 +85,7 @@ public class TestExceptions {
     public void testTooManyTasksIncomplete() {
         buildFields();
         Task project = new SchoolTask("","",false,"");
-        testToDoList.addSchoolTask("project","110", false,"school",project);
+        testToDoList.addSchoolTask("project","110", false,"school");
 
         assertEquals(6, testToDoList.size());
         try {
@@ -101,7 +101,7 @@ public class TestExceptions {
     public void testNotTooManyTasksIncomplete() {
         buildFields();
         Task project = new SchoolTask("","",true,"");
-        testToDoList.addSchoolTask("project","110", true,"school",project);
+        testToDoList.addSchoolTask("project","110", true,"school");
 
         assertEquals(6, testToDoList.size());
         try {
@@ -119,11 +119,11 @@ public class TestExceptions {
         Task sleep = new GeneralTask("","", false,"");
 
 
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
-        testToDoList.addSchoolTask("hw","210",false,"school",hw);
-        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        testToDoList.addGeneralTask("eat", "everday",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
+        testToDoList.addSchoolTask("hw","210",false,"school");
+        testToDoList.addGeneralTask("sleep","everday",false,"school");
     }
 
 }

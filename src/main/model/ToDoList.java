@@ -11,36 +11,60 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ToDoList implements Loadable, Saveable {
 
-    private ArrayList<Task> taskList;
+    private ArrayList<Task> tasks;
+    private ToDoList toDoList;
     private int maxincomplete = 5;
+    private Map<Course, ArrayList<Task>> courseMap = new HashMap<>();
 
     // EFFECTS: list is empty
     public ToDoList() {
-        taskList = new ArrayList<>();
+        tasks = new ArrayList<>();
     }
 
 
     // MODIFIES: this
     // EFFECTS: add a SchoolTask to the todolist
-    public void addSchoolTask(String name, String course, Boolean state, String type, Task t) {
-        t = new SchoolTask(name, course, state, type);
+    public void addSchoolTask(String name, String course, Boolean state, String type) {
+        Task t = new SchoolTask(name, course, state, type);
         t.setType("school");
-        taskList.add(t);
+        tasks.add(t);
         taskIsAdded(name);
+        addCourse(course, t);
+    }
+
+    // EFFECTS: add course to courseMap
+    private void addCourse(String code, Task t) {
+        Course course = new Course(code);
+        if (courseMap.containsKey(course)) {
+            System.out.println(course.code + " exists");
+            addTaskToCourse(course, t);
+        } else {
+            courseMap.put(course, new ArrayList<>());
+            addTaskToCourse(course, t);
+        }
+    }
+
+    // EFFECTS: put Task as a value of the course in courseMap
+    private void addTaskToCourse(Course course, Task t) {
+        ArrayList<Task> tasks = courseMap.get(course);
+        tasks.add(t);
+        System.out.println(t.name + " is added to " + course.code);
+    }
+
+    public void printCourseMap() {
+        System.out.println(courseMap.keySet());
     }
 
     // MODIFIES: this
     // EFFECTS: add a GeneralTask to the todolist
-    public void addGeneralTask(String name, String category, Boolean state, String type, Task t) {
-        t = new GeneralTask(name, category, state, type);
+    public void addGeneralTask(String name, String category, Boolean state, String type) {
+        Task t = new GeneralTask(name, category, state, type);
         t.setType("general");
-        taskList.add(t);
+        tasks.add(t);
         taskIsAdded(name);
     }
 
@@ -50,12 +74,10 @@ public class ToDoList implements Loadable, Saveable {
         if (doesNotContainTask(taskName)) {
             throw new CannotFindTask();
         }
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             if (t.name.equals(taskName)) {
                 if (t.state) {
                     throw new TaskAlreadyComplete();
-//                    System.out.println("This task has already been marked completed");
-//                    break;
                 }
                 t.setStateTrue();
                 System.out.println("'" + t.name + "' has been marked completed");
@@ -72,9 +94,9 @@ public class ToDoList implements Loadable, Saveable {
         if (doesNotContainTask(taskName)) {
             throw new CannotFindTask();
         }
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             if (t.name.equals(taskName)) {
-                taskList.remove(t);
+                tasks.remove(t);
                 System.out.println("'" + t.name + "' has been removed");
                 break;
             }
@@ -84,7 +106,7 @@ public class ToDoList implements Loadable, Saveable {
     // EFFECTS: return true if the list does not contain the task,
     //          otherwise return false
     public boolean doesNotContainTask(String taskName) {
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             if (t.name.equals(taskName)) {
                 return false;
             }
@@ -96,17 +118,17 @@ public class ToDoList implements Loadable, Saveable {
     //          otherwise say there is no task
     public void printList() {
         System.out.println("Your current ToDoList tasks are as followed:");
-        if (taskList.size() == 0) {
+        if (tasks.size() == 0) {
             System.out.println("There is no task in the list");
         }
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             t.printTask();
         }
     }
 
     public void tooManyTasks() throws TooManyTasksIncomplete {
         int numincomplete = 0;
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             if (!t.state) {
                 numincomplete++;
             }
@@ -133,16 +155,16 @@ public class ToDoList implements Loadable, Saveable {
 
     // EFFECTS: returns the size of the list
     public int size() {
-        return taskList.size();
+        return tasks.size();
     }
 
     public Task get(int i) {
-        return taskList.get(i);
+        return tasks.get(i);
     }
 
     @Override
     public void load(String file) throws IOException {
-        taskList = new ArrayList<>();
+        tasks = new ArrayList<>();
 
         List<String> lines = Files.readAllLines(Paths.get(file));
         for (String line : lines) {
@@ -165,7 +187,7 @@ public class ToDoList implements Loadable, Saveable {
         t.name = partsOfLine.get(0);
         t.state = Boolean.parseBoolean(partsOfLine.get(2));
         t.type = partsOfLine.get(3);
-        taskList.add(t);
+        tasks.add(t);
     }
 
     public static ArrayList<String> splitOnSpace(String line) {
@@ -178,11 +200,11 @@ public class ToDoList implements Loadable, Saveable {
         List<String> lines = new ArrayList<>();
         PrintWriter writer = new PrintWriter(file, "UTF-8");
         System.out.println("Your file contains:");
-        for (Task t : taskList) {
+        for (Task t : tasks) {
             if (t == null) {
                 lines.add("N/A");
                 System.out.println("N/A");
-            } else if (t != null) {
+            } else {
                 if (t.type.equals("school")) {
                     lines.add(t.name + " " + t.course + " " + t.state + " " + t.type);
                     System.out.println(t.name + " " + t.course + " " + t.state + " " + t.type);

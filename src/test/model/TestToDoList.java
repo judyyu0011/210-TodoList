@@ -31,7 +31,7 @@ public class TestToDoList {
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("run"));
         //insert task into list
-        testToDoList.addGeneralTask("run", "exercise", false, "general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise", false, "general");
         //check that task is in list once
         assertEquals(1, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("run"));
@@ -43,7 +43,7 @@ public class TestToDoList {
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("hw"));
         //insert task into list
-        testToDoList.addSchoolTask("hw", "cpsc", false, "school", mySchoolTask);
+        testToDoList.addSchoolTask("hw", "cpsc", false, "school");
         //check that task is in list once
         assertEquals(1, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("hw"));
@@ -65,9 +65,9 @@ public class TestToDoList {
         Task exercise = new GeneralTask("","", false,"");
 
         assertEquals(0, testToDoList.size());
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", exercise);
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        testToDoList.addGeneralTask("eat", "everday",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
 
         assertEquals(3, testToDoList.size());
         assertFalse(testToDoList.doesNotContainTask("essay"));
@@ -78,7 +78,7 @@ public class TestToDoList {
 
     @Test
     public void testMarkComplete() throws CannotAlterTask {
-        testToDoList.addGeneralTask("run", "exercise", false,"general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise", false,"general");
         assertFalse(testToDoList.doesNotContainTask("run"));
         assertFalse(testToDoList.get(0).getState());
 
@@ -91,7 +91,7 @@ public class TestToDoList {
     public void testMarkCompleteTaskAlreadyComplete() {
 
         myGeneralTask = new GeneralTask("run","exercise",true,"general");
-        testToDoList.addGeneralTask("run", "exercise",true,"general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise",true,"general");
         assertTrue(myGeneralTask.getState());
         try {
             testToDoList.markComplete("run");
@@ -105,7 +105,7 @@ public class TestToDoList {
     @Test
     public void testMarkCompleteTaskNotComplete() {
         myGeneralTask = new GeneralTask("run","exercise",false,"general");
-        testToDoList.addGeneralTask("run", "exercise",false,"general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
         assertFalse(testToDoList.get(0).state);
         try {
             testToDoList.markComplete("run");
@@ -118,7 +118,7 @@ public class TestToDoList {
     @Test
     public void testMarkCompleteTaskNotThere() {
         myGeneralTask = new GeneralTask("run","exercise",false,"general");
-        testToDoList.addGeneralTask("run", "exercise",false,"general", myGeneralTask);
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
         try {
             testToDoList.markComplete("hello");
             fail("Exception was not thrown");
@@ -151,7 +151,7 @@ public class TestToDoList {
     @Test
     public void testRemoveTaskThere() {
 //        myGeneralTask = new GeneralTask("run","general",false,"exercise");
-        testToDoList.addGeneralTask("run", "general",false,"exercise", myGeneralTask);
+        testToDoList.addGeneralTask("run", "general",false,"exercise");
         try {
             testToDoList.removeTask("run");
         } catch (CannotFindTask e) {
@@ -194,7 +194,7 @@ public class TestToDoList {
     public void testTooManyTasksIncomplete() {
         buildFields();
         Task project = new SchoolTask("","",false,"");
-        testToDoList.addSchoolTask("project","110", false,"school",project);
+        testToDoList.addSchoolTask("project","110", false,"school");
 
         assertEquals(6, testToDoList.size());
         try {
@@ -210,7 +210,7 @@ public class TestToDoList {
     public void testNotTooManyTasksIncomplete() {
         buildFields();
         Task project = new SchoolTask("","",true,"");
-        testToDoList.addSchoolTask("project","110", true,"school",project);
+        testToDoList.addSchoolTask("project","110", true,"school");
 
         assertEquals(6, testToDoList.size());
         try {
@@ -228,11 +228,11 @@ public class TestToDoList {
         Task sleep = new GeneralTask("","", false,"");
 
 
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", run);
-        testToDoList.addSchoolTask("hw","210",false,"school",hw);
-        testToDoList.addGeneralTask("sleep","everday",false,"school",sleep);
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        testToDoList.addGeneralTask("eat", "everday",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
+        testToDoList.addSchoolTask("hw","210",false,"school");
+        testToDoList.addGeneralTask("sleep","everday",false,"school");
     }
 
     @Test
@@ -248,9 +248,9 @@ public class TestToDoList {
         Task essay = new SchoolTask("","", false,"");
         Task eat = new GeneralTask("","", false,"");
         Task exercise = new GeneralTask("","", false,"");
-        testToDoList.addSchoolTask("essay", "ENGL112",false,"school", essay);
-        testToDoList.addGeneralTask("eat", "everday",false,"general", eat);
-        testToDoList.addGeneralTask("run", "exercise",false,"general", exercise);
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        testToDoList.addGeneralTask("eat", "everday",false,"general");
+        testToDoList.addGeneralTask("run", "exercise",false,"general");
 
         testToDoList.save("testfile1");
 

@@ -44,7 +44,7 @@ public class ManageToDoList {
                 optionRemove();
 
             } else if (option.equals("4")) {
-                myList.printList();
+                optionPrint();
 
             } else if (option.equals("5")) {
                 myList.save("TodoListData");
@@ -100,15 +100,16 @@ public class ManageToDoList {
         if (option.equals("school")) {
             System.out.println("What course is this task for?");
             course = scanner.nextLine();
-            myList.addSchoolTask(name, course, false, type, newSchoolTask);
+            myList.addSchoolTask(name, course, false, type);
         } else if (option.equals("general")) {
             System.out.println("What category is this task in?");
             category = scanner.nextLine();
-            myList.addGeneralTask(name, category, false, type, newGeneralTask);
+            myList.addGeneralTask(name, category, false, type);
         } else {
             System.out.println("This is not a valid option");
         }
     }
+
 
     private void optionMarkComplete() {
         myList.printList();
@@ -143,5 +144,19 @@ public class ManageToDoList {
             System.out.println("Continuing...");
         }
     }
+
+    private void optionPrint() {
+        System.out.println("To view all tasks press [1]");
+        System.out.println("To view tasks by courses press [1]");
+
+        option = scanner.nextLine();
+        if (option.equals("1")) {
+            myList.printList();
+        } else if (option.equals("2")) {
+            myList.printCourseMap();
+        } else {
+            System.out.println("This is not a valid option");
+        }
+    }
 }
-//
+
