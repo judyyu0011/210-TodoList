@@ -3,6 +3,7 @@ package ui;
 import exceptions.CannotAlterTask;
 import exceptions.CannotFindTask;
 import exceptions.TooManyTasksIncomplete;
+import model.Course;
 import model.GeneralTask;
 import model.SchoolTask;
 import model.ToDoList;
@@ -15,10 +16,11 @@ public class ManageToDoList {
     private Scanner scanner;
     private String option = "";
     private String name;
+    private Course course = new Course("");
 
     private ToDoList myList = new ToDoList();
     GeneralTask newGeneralTask = new GeneralTask("","", false,"");
-    SchoolTask newSchoolTask = new SchoolTask("","", false,"");
+    SchoolTask newSchoolTask = new SchoolTask("",null, false,"");
 
 
     public ManageToDoList() throws IOException {
@@ -147,13 +149,13 @@ public class ManageToDoList {
 
     private void optionPrint() {
         System.out.println("To view all tasks press [1]");
-        System.out.println("To view tasks by courses press [1]");
+        System.out.println("To view tasks by courses press [2]");
 
         option = scanner.nextLine();
         if (option.equals("1")) {
             myList.printList();
         } else if (option.equals("2")) {
-            myList.printCourseMap();
+            System.out.println(course.courses);
         } else {
             System.out.println("This is not a valid option");
         }

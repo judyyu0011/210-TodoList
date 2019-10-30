@@ -3,7 +3,7 @@ package model;
 
 public abstract class Task {
     protected String category;
-    protected String course;
+    protected Course course = new Course("");
     protected String name;
     protected String type;
     protected boolean state;
@@ -32,6 +32,10 @@ public abstract class Task {
     // setters
     public void setType(String t) {
         this.type = t;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.course.code = courseCode;
     }
 
 //    public void setName(String n) {

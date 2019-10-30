@@ -22,7 +22,7 @@ public class TestToDoList {
     public void setup(){
         testToDoList = new ToDoList();
         myGeneralTask = new GeneralTask("","", false, "");
-        mySchoolTask = new SchoolTask("","", false, "");
+        mySchoolTask = new SchoolTask("",null, false, "");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class TestToDoList {
 
     @Test
     public void testAddMultipleTasks() throws FileNotFoundException, UnsupportedEncodingException {
-        Task essay = new SchoolTask("","", false,"");
+        Task essay = new SchoolTask("",null, false,"");
         Task eat = new GeneralTask("","", false,"");
         Task exercise = new GeneralTask("","", false,"");
 
@@ -193,7 +193,7 @@ public class TestToDoList {
     @Test
     public void testTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("","",false,"");
+        Task project = new SchoolTask("",null,false,"");
         testToDoList.addSchoolTask("project","110", false,"school");
 
         assertEquals(6, testToDoList.size());
@@ -209,7 +209,7 @@ public class TestToDoList {
     @Test
     public void testNotTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("","",true,"");
+        Task project = new SchoolTask("",null,true,"");
         testToDoList.addSchoolTask("project","110", true,"school");
 
         assertEquals(6, testToDoList.size());
@@ -221,10 +221,10 @@ public class TestToDoList {
     }
 
     public void buildFields() {
-        Task essay = new SchoolTask("","", false,"");
+        Task essay = new SchoolTask("",null, false,"");
         Task eat = new GeneralTask("","", false,"");
         Task run = new GeneralTask("","", false,"");
-        Task hw = new SchoolTask("","",false,"");
+        Task hw = new SchoolTask("",null,false,"");
         Task sleep = new GeneralTask("","", false,"");
 
 
@@ -245,7 +245,7 @@ public class TestToDoList {
     public void testSaveAndLoad() throws IOException {
         ToDoList testSaveList = new ToDoList();
 
-        Task essay = new SchoolTask("","", false,"");
+        Task essay = new SchoolTask("",null, false,"");
         Task eat = new GeneralTask("","", false,"");
         Task exercise = new GeneralTask("","", false,"");
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");

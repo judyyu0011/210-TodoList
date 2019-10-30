@@ -84,7 +84,7 @@ public class TestExceptions {
     @Test
     public void testTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("","",false,"");
+        Task project = new SchoolTask("",null,false,"");
         testToDoList.addSchoolTask("project","110", false,"school");
 
         assertEquals(6, testToDoList.size());
@@ -100,7 +100,7 @@ public class TestExceptions {
     @Test
     public void testNotTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("","",true,"");
+        Task project = new SchoolTask("",null,true,"");
         testToDoList.addSchoolTask("project","110", true,"school");
 
         assertEquals(6, testToDoList.size());
@@ -112,10 +112,10 @@ public class TestExceptions {
     }
 
     public void buildFields() {
-        Task essay = new SchoolTask("","", false,"");
+        Task essay = new SchoolTask("",null, false,"");
         Task eat = new GeneralTask("","", false,"");
         Task run = new GeneralTask("","", false,"");
-        Task hw = new SchoolTask("","",false,"");
+        Task hw = new SchoolTask("",null,false,"");
         Task sleep = new GeneralTask("","", false,"");
 
 

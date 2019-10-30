@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTask {
-    Task mySchoolTask = new SchoolTask("essay","ENGL112", false,"school");
+    Course course = new Course("ENGL112");
+    Task mySchoolTask = new SchoolTask("essay",course, false,"school");
     Task myGeneralTask = new GeneralTask("run","exercise", false, "general");
 
     @Test
@@ -37,8 +38,8 @@ public class TestTask {
 
     @Test
     public void testGetCourse() {
-        SchoolTask sTask = new SchoolTask("essay","ENGL112", false,"school");
-        assertEquals("ENGL112", sTask.getCourse());
+        SchoolTask sTask = new SchoolTask("essay",course, false,"school");
+        assertEquals("ENGL112", sTask.getCourseCode());
     }
 
     @Test

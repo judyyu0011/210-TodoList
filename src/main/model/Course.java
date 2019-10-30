@@ -1,12 +1,39 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Course {
 
     public String code;
+    private Task myTask;
+    public ArrayList<Course> courses = new ArrayList<>();
 
     public Course(String code) {
         this.code = code;
     }
+
+    public boolean courseExists(String courseCode) {
+        for (Course c : courses) {
+            if (c.code.equals(courseCode)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Course returnCourseGivenCode(String courseCode) {
+        for (Course c : courses) {
+            if (c.code.equals(courseCode)) {
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public String getCourseCode() {
+        return code;
+    }
+
 
     @Override
     public boolean equals(Object o) {

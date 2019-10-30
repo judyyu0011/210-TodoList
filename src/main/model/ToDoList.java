@@ -17,8 +17,9 @@ public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> tasks;
     private ToDoList toDoList;
+    private Course course = new Course("");
     private int maxincomplete = 5;
-    private Map<Course, ArrayList<Task>> courseMap = new HashMap<>();
+//    public Map<Course, ArrayList<Task>> courseMap = new HashMap<>();
 
     // EFFECTS: list is empty
     public ToDoList() {
@@ -28,36 +29,45 @@ public class ToDoList implements Loadable, Saveable {
 
     // MODIFIES: this
     // EFFECTS: add a SchoolTask to the todolist
-    public void addSchoolTask(String name, String course, Boolean state, String type) {
-        Task t = new SchoolTask(name, course, state, type);
+    public void addSchoolTask(String name, String courseCode, Boolean state, String type) {
+        Task t;
+        if (!course.courseExists(courseCode)) {
+            Course course = new Course(courseCode);
+            course.courses.add(course);
+            t = new SchoolTask(name, course, state, type);
+        } else {
+            course = course.returnCourseGivenCode(courseCode);
+            t = new SchoolTask(name, course, state, type);
+
+        }
         t.setType("school");
         tasks.add(t);
         taskIsAdded(name);
-        addCourse(course, t);
+//        addCourse(course, t);
     }
 
-    // EFFECTS: add course to courseMap
-    private void addCourse(String code, Task t) {
-        Course course = new Course(code);
-        if (courseMap.containsKey(course)) {
-            System.out.println(course.code + " exists");
-            addTaskToCourse(course, t);
-        } else {
-            courseMap.put(course, new ArrayList<>());
-            addTaskToCourse(course, t);
-        }
-    }
+//    // EFFECTS: add course to courseMap
+//    private void addCourse(String code, Task t) {
+//        Course course = new Course(code);
+//        if (courseMap.containsKey(course)) {
+//            System.out.println(course.code + " exists");
+//            addTaskToCourse(course, t);
+//        } else {
+//            courseMap.put(course, new ArrayList<>());
+//            addTaskToCourse(course, t);
+//        }
+//    }
 
-    // EFFECTS: put Task as a value of the course in courseMap
-    private void addTaskToCourse(Course course, Task t) {
-        ArrayList<Task> tasks = courseMap.get(course);
-        tasks.add(t);
-        System.out.println(t.name + " is added to " + course.code);
-    }
-
-    public void printCourseMap() {
-        System.out.println(courseMap.keySet());
-    }
+//    // EFFECTS: put Task as a value of the course in courseMap
+//    private void addTaskToCourse(Course course, Task t) {
+//        ArrayList<Task> tasks = courseMap.get(course);
+//        tasks.add(t);
+//        System.out.println(t.name + " is added to " + course.code);
+//    }
+//
+//    public void printCourseMap() {
+//        System.out.println(courseMap.keySet());
+//    }
 
     // MODIFIES: this
     // EFFECTS: add a GeneralTask to the todolist
@@ -171,8 +181,12 @@ public class ToDoList implements Loadable, Saveable {
             ArrayList<String> partsOfLine = splitOnSpace(line);
 
             if (partsOfLine.get(3).equals("school")) {
-                Task t = new SchoolTask("","", false, "");
-                t.course = partsOfLine.get(1);
+                Task t = new SchoolTask("",course, false, "");
+                course.code = partsOfLine.get(1);
+                this.course = this.course.returnCourseGivenCode(partsOfLine.get(1));
+//                String c = partsOfLine.get(1);
+//                t.setCourseCode(c);
+//                t.course = course.returnCourseGivenCode(c);
                 declareNameStateType(partsOfLine, t);
             } else {
                 Task t = new GeneralTask("","", false,"");
@@ -206,8 +220,8 @@ public class ToDoList implements Loadable, Saveable {
                 System.out.println("N/A");
             } else {
                 if (t.type.equals("school")) {
-                    lines.add(t.name + " " + t.course + " " + t.state + " " + t.type);
-                    System.out.println(t.name + " " + t.course + " " + t.state + " " + t.type);
+                    lines.add(t.name + " " + t.toString() + " " + t.state + " " + t.type);
+                    System.out.println(t.name + " " + t.toString() + " " + t.state + " " + t.type);
                 } else {
                     lines.add(t.name + " " + t.category + " " + t.state + " " + t.type);
                     System.out.println(t.name + " " + t.category + " " + t.state + " " + t.type);
