@@ -190,7 +190,7 @@ public class ToDoList implements Loadable, Saveable {
         tasks.add(t);
     }
 
-    public static ArrayList<String> splitOnSpace(String line) {
+    private static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split(" ");
         return new ArrayList<>(Arrays.asList(splits));
     }
