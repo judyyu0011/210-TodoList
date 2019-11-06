@@ -16,10 +16,8 @@ import java.util.*;
 public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> tasks;
-    private ToDoList toDoList;
     private Course course = new Course("");
     private int maxincomplete = 5;
-//    public Map<Course, ArrayList<Task>> courseMap = new HashMap<>();
 
     // EFFECTS: list is empty
     public ToDoList() {
@@ -46,28 +44,6 @@ public class ToDoList implements Loadable, Saveable {
 //        addCourse(course, t);
     }
 
-//    // EFFECTS: add course to courseMap
-//    private void addCourse(String code, Task t) {
-//        Course course = new Course(code);
-//        if (courseMap.containsKey(course)) {
-//            System.out.println(course.code + " exists");
-//            addTaskToCourse(course, t);
-//        } else {
-//            courseMap.put(course, new ArrayList<>());
-//            addTaskToCourse(course, t);
-//        }
-//    }
-
-//    // EFFECTS: put Task as a value of the course in courseMap
-//    private void addTaskToCourse(Course course, Task t) {
-//        ArrayList<Task> tasks = courseMap.get(course);
-//        tasks.add(t);
-//        System.out.println(t.name + " is added to " + course.code);
-//    }
-//
-//    public void printCourseMap() {
-//        System.out.println(courseMap.keySet());
-//    }
 
     // MODIFIES: this
     // EFFECTS: add a GeneralTask to the todolist
@@ -95,7 +71,6 @@ public class ToDoList implements Loadable, Saveable {
             }
         }
     }
-
 
 
     // MODIFIES: this
@@ -136,6 +111,7 @@ public class ToDoList implements Loadable, Saveable {
         }
     }
 
+    // EFFECTS: throw exception if incomplete tasks > maxincomplete
     public void tooManyTasks() throws TooManyTasksIncomplete {
         int numincomplete = 0;
         for (Task t : tasks) {
@@ -180,21 +156,29 @@ public class ToDoList implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
 
-            if (partsOfLine.get(3).equals("school")) {
-                Task t = new SchoolTask("",course, false, "");
-                course.code = partsOfLine.get(1);
-                this.course = this.course.returnCourseGivenCode(partsOfLine.get(1));
-//                String c = partsOfLine.get(1);
-//                t.setCourseCode(c);
-//                t.course = course.returnCourseGivenCode(c);
-                declareNameStateType(partsOfLine, t);
-            } else {
-                Task t = new GeneralTask("","", false,"");
-                t.category = partsOfLine.get(1);
-                declareNameStateType(partsOfLine, t);
-            }
+            loadHelper(partsOfLine);
         }
         printList();
+    }
+
+    private void loadHelper(ArrayList<String> partsOfLine) {
+        Course c;
+        if (partsOfLine.get(3).equals("school")) {
+            if (course.courseExists(partsOfLine.get(1))) {
+                c = course.returnCourseGivenCode(partsOfLine.get(1));
+                Task t = new SchoolTask("",c, false, "");
+                declareNameStateType(partsOfLine, t);
+            } else {
+                c = new Course(partsOfLine.get(1));
+                course.courses.add(c);
+                Task t = new SchoolTask("",c, false, "");
+                declareNameStateType(partsOfLine, t);
+            }
+        } else {
+            Task t = new GeneralTask("","", false,"");
+            t.category = partsOfLine.get(1);
+            declareNameStateType(partsOfLine, t);
+        }
     }
 
     private void declareNameStateType(ArrayList<String> partsOfLine, Task t) {

@@ -34,7 +34,6 @@ public class Course {
         return code;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

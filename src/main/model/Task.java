@@ -34,6 +34,10 @@ public abstract class Task {
         this.type = t;
     }
 
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     public void setCourseCode(String courseCode) {
         this.course.code = courseCode;
     }
