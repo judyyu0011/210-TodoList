@@ -1,9 +1,10 @@
 package model;
 
 
+import exceptions.TaskAlreadyComplete;
+
 public abstract class Task {
     protected String category;
-    protected Course course = new Course("");
     protected String name;
     protected String type;
     protected boolean state;
@@ -34,25 +35,31 @@ public abstract class Task {
         this.type = t;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setStateTrue() {
+        this.state = true;
     }
 
-    public void setCourseCode(String courseCode) {
-        this.course.code = courseCode;
-    }
 
 //    public void setName(String n) {
 //        this.name = n;
 //    }
 
-    public void setStateTrue() {
-        this.state = true;
-    }
-
 //    public void setStateFalse() {
 //        this.state = false;
 //    }
+
+
+    public boolean changeStateToTrue(String taskName) throws TaskAlreadyComplete {
+        if (name.equals(taskName)) {
+            if (state) {
+                throw new TaskAlreadyComplete();
+            }
+            setStateTrue();
+            System.out.println("'" + name + "' has been marked completed");
+            return true;
+        }
+        return false;
+    }
 
     public String completeOrNot() {
         if (getState()) {

@@ -147,6 +147,7 @@ public class ManageToDoList {
         }
     }
 
+    // EFFECTS: prints todolist in two ways
     private void optionPrint() {
         System.out.println("To view all tasks press [1]");
         System.out.println("To view tasks by courses press [2]");
@@ -155,7 +156,7 @@ public class ManageToDoList {
         if (option.equals("1")) {
             myList.printList();
         } else if (option.equals("2")) {
-            System.out.println(course.courses);
+            course.printCourses();
         } else {
             System.out.println("This is not a valid option");
         }

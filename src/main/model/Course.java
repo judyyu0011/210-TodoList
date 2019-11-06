@@ -1,28 +1,17 @@
 package model;
 
-import java.util.ArrayList;
-
 public class Course {
 
     public String code;
-    private Task myTask;
-    public ArrayList<Course> courses = new ArrayList<>();
+    public ToDoList myList = new ToDoList();
 
     public Course(String code) {
         this.code = code;
     }
 
-    public boolean courseExists(String courseCode) {
-        for (Course c : courses) {
-            if (c.code.equals(courseCode)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public Course returnCourseGivenCode(String courseCode) {
-        for (Course c : courses) {
+        for (Course c : myList.courses) {
             if (c.code.equals(courseCode)) {
                 return c;
             }
@@ -30,26 +19,37 @@ public class Course {
         return null;
     }
 
+
     public String getCourseCode() {
         return code;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+//    public ArrayList<Course> getCourses() {
+//        return myList.courses;
+//    }
 
-        Course course = (Course) o;
-
-        return code.equals(course.code);
+    public void printCourses() {
+        for (Course c : myList.courses) {
+            System.out.println(c.code);
+        }
     }
 
-    @Override
-    public int hashCode() {
-        return code.hashCode();
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//
+//        Course course = (Course) o;
+//
+//        return code.equals(course.code);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return code.hashCode();
+//    }
 }

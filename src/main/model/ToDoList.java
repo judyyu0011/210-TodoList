@@ -2,7 +2,6 @@ package model;
 
 import exceptions.CannotAlterTask;
 import exceptions.CannotFindTask;
-import exceptions.TaskAlreadyComplete;
 import exceptions.TooManyTasksIncomplete;
 
 import java.io.FileNotFoundException;
@@ -16,12 +15,14 @@ import java.util.*;
 public class ToDoList implements Loadable, Saveable {
 
     private ArrayList<Task> tasks;
-    private Course course = new Course("");
+    public ArrayList<Course> courses;
+    private Course course;
     private int maxincomplete = 5;
 
-    // EFFECTS: list is empty
+    // EFFECTS: constructs an empty todolist with tasks and courses
     public ToDoList() {
         tasks = new ArrayList<>();
+        courses = new ArrayList<>();
     }
 
 
@@ -29,9 +30,10 @@ public class ToDoList implements Loadable, Saveable {
     // EFFECTS: add a SchoolTask to the todolist
     public void addSchoolTask(String name, String courseCode, Boolean state, String type) {
         Task t;
-        if (!course.courseExists(courseCode)) {
+        course = new Course("");
+        if (!courseExists(courseCode)) {
             Course course = new Course(courseCode);
-            course.courses.add(course);
+            courses.add(course);
             t = new SchoolTask(name, course, state, type);
         } else {
             course = course.returnCourseGivenCode(courseCode);
@@ -42,6 +44,15 @@ public class ToDoList implements Loadable, Saveable {
         tasks.add(t);
         taskIsAdded(name);
 //        addCourse(course, t);
+    }
+
+    public boolean courseExists(String courseCode) {
+        for (Course c : courses) {
+            if (c.getCourseCode().equals(courseCode)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -61,12 +72,7 @@ public class ToDoList implements Loadable, Saveable {
             throw new CannotFindTask();
         }
         for (Task t : tasks) {
-            if (t.name.equals(taskName)) {
-                if (t.state) {
-                    throw new TaskAlreadyComplete();
-                }
-                t.setStateTrue();
-                System.out.println("'" + t.name + "' has been marked completed");
+            if (t.changeStateToTrue(taskName)) {
                 break;
             }
         }
@@ -156,21 +162,22 @@ public class ToDoList implements Loadable, Saveable {
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
 
-            loadHelper(partsOfLine);
+            loadTaskToLine(partsOfLine);
         }
         printList();
     }
 
-    private void loadHelper(ArrayList<String> partsOfLine) {
+    private void loadTaskToLine(ArrayList<String> partsOfLine) {
+        course = new Course("");
         Course c;
         if (partsOfLine.get(3).equals("school")) {
-            if (course.courseExists(partsOfLine.get(1))) {
+            if (courseExists(partsOfLine.get(1))) {
                 c = course.returnCourseGivenCode(partsOfLine.get(1));
                 Task t = new SchoolTask("",c, false, "");
                 declareNameStateType(partsOfLine, t);
             } else {
                 c = new Course(partsOfLine.get(1));
-                course.courses.add(c);
+                courses.add(c);
                 Task t = new SchoolTask("",c, false, "");
                 declareNameStateType(partsOfLine, t);
             }
@@ -199,20 +206,24 @@ public class ToDoList implements Loadable, Saveable {
         PrintWriter writer = new PrintWriter(file, "UTF-8");
         System.out.println("Your file contains:");
         for (Task t : tasks) {
-            if (t == null) {
-                lines.add("N/A");
-                System.out.println("N/A");
-            } else {
-                if (t.type.equals("school")) {
-                    lines.add(t.name + " " + t.toString() + " " + t.state + " " + t.type);
-                    System.out.println(t.name + " " + t.toString() + " " + t.state + " " + t.type);
-                } else {
-                    lines.add(t.name + " " + t.category + " " + t.state + " " + t.type);
-                    System.out.println(t.name + " " + t.category + " " + t.state + " " + t.type);
-                }
-            }
+            saveTask(lines, t);
         }
         write(lines, writer);
+    }
+
+    private void saveTask(List<String> lines, Task t) {
+        if (t == null) {
+            lines.add("N/A");
+            System.out.println("N/A");
+        } else {
+            if (t.type.equals("school")) {
+                lines.add(t.name + " " + t.toString() + " " + t.state + " " + t.type);
+                System.out.println(t.name + " " + t.toString() + " " + t.state + " " + t.type);
+            } else {
+                lines.add(t.name + " " + t.category + " " + t.state + " " + t.type);
+                System.out.println(t.name + " " + t.category + " " + t.state + " " + t.type);
+            }
+        }
     }
 
     private void write(List<String> lines, PrintWriter writer) {

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,12 +18,16 @@ public class TestToDoList {
     ToDoList testToDoList;
     Task myGeneralTask;
     Task mySchoolTask;
+    Course myCourse;
+    ArrayList<Course> courses;
 
     @BeforeEach
     public void setup(){
         testToDoList = new ToDoList();
         myGeneralTask = new GeneralTask("","", false, "");
         mySchoolTask = new SchoolTask("",null, false, "");
+        myCourse = new Course("210");
+        courses = new ArrayList<>();
     }
 
     @Test
@@ -38,7 +43,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testAddSchoolTask() throws FileNotFoundException, UnsupportedEncodingException {
+    public void testAddSchoolTask() {
         //check that task is not already there
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("hw"));
@@ -59,10 +64,7 @@ public class TestToDoList {
 //    }
 
     @Test
-    public void testAddMultipleTasks() throws FileNotFoundException, UnsupportedEncodingException {
-        Task essay = new SchoolTask("",null, false,"");
-        Task eat = new GeneralTask("","", false,"");
-        Task exercise = new GeneralTask("","", false,"");
+    public void testAddMultipleTasks() {
 
         assertEquals(0, testToDoList.size());
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
@@ -75,6 +77,19 @@ public class TestToDoList {
         assertFalse(testToDoList.doesNotContainTask("run"));
     }
 
+    @Test
+    public void testAddTaskWithExistingCourse() {
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        testToDoList.addSchoolTask("presentation","ENGL112",false,"school");
+        assertEquals(2, testToDoList.size());
+        assertTrue(testToDoList.courses.size() == 1);
+    }
+
+    @Test
+    public void testCourseExists() {
+        testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
+        assertTrue(testToDoList.courseExists("ENGL112"));
+    }
 
     @Test
     public void testMarkComplete() throws CannotAlterTask {
@@ -150,7 +165,6 @@ public class TestToDoList {
 
     @Test
     public void testRemoveTaskThere() {
-//        myGeneralTask = new GeneralTask("run","general",false,"exercise");
         testToDoList.addGeneralTask("run", "general",false,"exercise");
         try {
             testToDoList.removeTask("run");
@@ -193,7 +207,6 @@ public class TestToDoList {
     @Test
     public void testTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("",null,false,"");
         testToDoList.addSchoolTask("project","110", false,"school");
 
         assertEquals(6, testToDoList.size());
@@ -209,7 +222,6 @@ public class TestToDoList {
     @Test
     public void testNotTooManyTasksIncomplete() {
         buildFields();
-        Task project = new SchoolTask("",null,true,"");
         testToDoList.addSchoolTask("project","110", true,"school");
 
         assertEquals(6, testToDoList.size());
@@ -221,12 +233,6 @@ public class TestToDoList {
     }
 
     public void buildFields() {
-        Task essay = new SchoolTask("",null, false,"");
-        Task eat = new GeneralTask("","", false,"");
-        Task run = new GeneralTask("","", false,"");
-        Task hw = new SchoolTask("",null,false,"");
-        Task sleep = new GeneralTask("","", false,"");
-
 
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
         testToDoList.addGeneralTask("eat", "everday",false,"general");
@@ -245,9 +251,6 @@ public class TestToDoList {
     public void testSaveAndLoad() throws IOException {
         ToDoList testSaveList = new ToDoList();
 
-        Task essay = new SchoolTask("",null, false,"");
-        Task eat = new GeneralTask("","", false,"");
-        Task exercise = new GeneralTask("","", false,"");
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
         testToDoList.addGeneralTask("eat", "everday",false,"general");
         testToDoList.addGeneralTask("run", "exercise",false,"general");
