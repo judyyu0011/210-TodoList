@@ -6,6 +6,8 @@ import exceptions.TooManyTasksIncomplete;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -14,7 +16,7 @@ public class TestExceptions {
     ToDoList testToDoList;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         testToDoList = new ToDoList();
         newTask = new GeneralTask("","",false,"");
 
@@ -82,7 +84,7 @@ public class TestExceptions {
     }
 
     @Test
-    public void testTooManyTasksIncomplete() {
+    public void testTooManyTasksIncomplete() throws IOException {
         buildFields();
         Task project = new SchoolTask("",null,false,"");
         testToDoList.addSchoolTask("project","110", false,"school");
@@ -98,7 +100,7 @@ public class TestExceptions {
     }
 
     @Test
-    public void testNotTooManyTasksIncomplete() {
+    public void testNotTooManyTasksIncomplete() throws IOException {
         buildFields();
         Task project = new SchoolTask("",null,true,"");
         testToDoList.addSchoolTask("project","110", true,"school");
@@ -111,7 +113,7 @@ public class TestExceptions {
         }
     }
 
-    public void buildFields() {
+    public void buildFields() throws IOException {
         Task essay = new SchoolTask("",null, false,"");
         Task eat = new GeneralTask("","", false,"");
         Task run = new GeneralTask("","", false,"");

@@ -2,12 +2,17 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTask {
     Course course = new Course("ENGL112");
     Task mySchoolTask = new SchoolTask("essay",course, false,"school");
     Task myGeneralTask = new GeneralTask("run","exercise", false, "general");
+
+    public TestTask() throws IOException {
+    }
 
     @Test
     public void testGetName() {

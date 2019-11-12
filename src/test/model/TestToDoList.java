@@ -22,7 +22,7 @@ public class TestToDoList {
     ArrayList<Course> courses;
 
     @BeforeEach
-    public void setup(){
+    public void setup() throws IOException {
         testToDoList = new ToDoList();
         myGeneralTask = new GeneralTask("","", false, "");
         mySchoolTask = new SchoolTask("",null, false, "");
@@ -43,7 +43,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testAddSchoolTask() {
+    public void testAddSchoolTask() throws IOException {
         //check that task is not already there
         assertEquals(0, testToDoList.size());
         assertTrue(testToDoList.doesNotContainTask("hw"));
@@ -64,7 +64,7 @@ public class TestToDoList {
 //    }
 
     @Test
-    public void testAddMultipleTasks() {
+    public void testAddMultipleTasks() throws IOException {
 
         assertEquals(0, testToDoList.size());
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
@@ -78,7 +78,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testAddTaskWithExistingCourse() {
+    public void testAddTaskWithExistingCourse() throws IOException {
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
         testToDoList.addSchoolTask("presentation","ENGL112",false,"school");
         assertEquals(2, testToDoList.size());
@@ -86,7 +86,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testCourseExists() {
+    public void testCourseExists() throws IOException {
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
         assertTrue(testToDoList.courseExists("ENGL112"));
     }
@@ -205,7 +205,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testTooManyTasksIncomplete() {
+    public void testTooManyTasksIncomplete() throws IOException {
         buildFields();
         testToDoList.addSchoolTask("project","110", false,"school");
 
@@ -220,7 +220,7 @@ public class TestToDoList {
     }
 
     @Test
-    public void testNotTooManyTasksIncomplete() {
+    public void testNotTooManyTasksIncomplete() throws IOException {
         buildFields();
         testToDoList.addSchoolTask("project","110", true,"school");
 
@@ -232,7 +232,7 @@ public class TestToDoList {
         }
     }
 
-    public void buildFields() {
+    public void buildFields() throws IOException {
 
         testToDoList.addSchoolTask("essay", "ENGL112",false,"school");
         testToDoList.addGeneralTask("eat", "everday",false,"general");

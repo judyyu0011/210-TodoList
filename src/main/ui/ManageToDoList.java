@@ -7,16 +7,20 @@ import model.Course;
 import model.GeneralTask;
 import model.SchoolTask;
 import model.ToDoList;
+import network.Weather;
+import observer.Subject;
+import observer.WeatherObserver;
 
 import java.io.IOException;
 import java.util.Scanner;
 
-public class ManageToDoList {
+public class ManageToDoList extends Subject {
 
     private Scanner scanner;
     private String option = "";
     private String name;
     private Course course = new Course("");
+    private Weather weather = new Weather();
 
     private ToDoList myList = new ToDoList();
     GeneralTask newGeneralTask = new GeneralTask("","", false,"");
@@ -31,9 +35,10 @@ public class ManageToDoList {
 
     // MODIFIES: this
     // EFFECTS: prompt user for input, then add task, remove task, print list,
-    //          or quit given user inpt
+    //          or quit given user input
     private void run() throws IOException {
         while (true) {
+            addObserver(weather);
             giveUserOptions();
 
             if (option.equals("1")) {
@@ -49,6 +54,7 @@ public class ManageToDoList {
                 optionPrint();
 
             } else if (option.equals("5")) {
+                notifyObservers(myList);
                 myList.save("TodoListData");
                 break;
 
@@ -57,6 +63,7 @@ public class ManageToDoList {
             }
         }
     }
+
 
     private void giveUserOptions() {
         System.out.println(" ");
@@ -81,7 +88,7 @@ public class ManageToDoList {
         if (myList.doesNotContainTask(name)) {
             try {
                 addTask();
-            } catch (TooManyTasksIncomplete e) {
+            } catch (TooManyTasksIncomplete | IOException e) {
                 e.printStackTrace();
                 System.out.println("Add unsuccessful, too many incomplete tasks");
             }
@@ -90,7 +97,7 @@ public class ManageToDoList {
         }
     }
 
-    public void addTask() throws TooManyTasksIncomplete {
+    public void addTask() throws TooManyTasksIncomplete, IOException {
         String course;
         String category;
         String type = "";
@@ -161,5 +168,6 @@ public class ManageToDoList {
             System.out.println("This is not a valid option");
         }
     }
+
 }
 

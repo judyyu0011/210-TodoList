@@ -3,6 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ public class TestCourse {
     private ArrayList<Course> courses;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         course = new Course("210");
         courses = new ArrayList<>();
     }

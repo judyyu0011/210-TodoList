@@ -3,6 +3,8 @@ package model;
 import exceptions.CannotAlterTask;
 import exceptions.CannotFindTask;
 import exceptions.TooManyTasksIncomplete;
+import network.Weather;
+import observer.Subject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,15 +14,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class ToDoList implements Loadable, Saveable {
+public class ToDoList extends Subject implements Loadable, Saveable {
 
     private ArrayList<Task> tasks;
     public ArrayList<Course> courses;
+    public Weather weather;
     private Course course;
     private int maxincomplete = 5;
 
     // EFFECTS: constructs an empty todolist with tasks and courses
-    public ToDoList() {
+    public ToDoList() throws IOException {
         tasks = new ArrayList<>();
         courses = new ArrayList<>();
     }
@@ -28,7 +31,7 @@ public class ToDoList implements Loadable, Saveable {
 
     // MODIFIES: this
     // EFFECTS: add a SchoolTask to the todolist
-    public void addSchoolTask(String name, String courseCode, Boolean state, String type) {
+    public void addSchoolTask(String name, String courseCode, Boolean state, String type) throws IOException {
         Task t;
         course = new Course("");
         if (!courseExists(courseCode)) {
@@ -38,7 +41,6 @@ public class ToDoList implements Loadable, Saveable {
         } else {
             course = course.returnCourseGivenCode(courseCode);
             t = new SchoolTask(name, course, state, type);
-
         }
         t.setType("school");
         tasks.add(t);
@@ -54,7 +56,6 @@ public class ToDoList implements Loadable, Saveable {
         }
         return false;
     }
-
 
     // MODIFIES: this
     // EFFECTS: add a GeneralTask to the todolist
@@ -167,7 +168,7 @@ public class ToDoList implements Loadable, Saveable {
         printList();
     }
 
-    private void loadTaskToLine(ArrayList<String> partsOfLine) {
+    private void loadTaskToLine(ArrayList<String> partsOfLine) throws IOException {
         course = new Course("");
         Course c;
         if (partsOfLine.get(3).equals("school")) {

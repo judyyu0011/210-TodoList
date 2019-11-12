@@ -1,11 +1,13 @@
 package model;
 
+import java.io.IOException;
+
 public class Course {
 
     public String code;
     public ToDoList myList = new ToDoList();
 
-    public Course(String code) {
+    public Course(String code) throws IOException {
         this.code = code;
     }
 
