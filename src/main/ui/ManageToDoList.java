@@ -38,7 +38,6 @@ public class ManageToDoList extends Subject {
     //          or quit given user input
     private void run() throws IOException {
         while (true) {
-            addObserver(weather);
             giveUserOptions();
 
             if (option.equals("1")) {
@@ -66,6 +65,7 @@ public class ManageToDoList extends Subject {
 
 
     private void giveUserOptions() {
+        addObserver(weather);
         System.out.println(" ");
         System.out.println("What would you like to do? ");
         System.out.println("[1] add a task, ");

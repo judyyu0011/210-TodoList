@@ -24,8 +24,7 @@ public class Weather implements WeatherObserver {
         BufferedReader br = null;
 
         try {
-            String theURL = vancouverweatherquery + apikey;
-            URL url = new URL(theURL);
+            URL url = makeURL();
             br = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String line;
@@ -37,29 +36,44 @@ public class Weather implements WeatherObserver {
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
-            System.out.println(sb);
 
-            Object obj = new JSONParser().parse(String.valueOf(sb));
-            JSONObject jo = (JSONObject) obj;
-
-            JSONObject jo1 = (JSONObject) jo.get("main");
-
-            double t = (double) jo1.get("temp");
-            System.out.println(t);
-            return t;
-
-//            this.temp = t;
+//            System.out.println(sb);
+            return parsejson(sb);
 
         } catch (ParseException e) {
             e.printStackTrace();
         } finally {
 
-            if (br != null) {
-                br.close();
-            }
+            closebr(br);
         }
         return 0.0;
     }
+
+    private URL makeURL() throws MalformedURLException {
+        String apikey = "240788122919edf7542fcf22138ca522";
+        String vancouverweatherquery =
+                "http://api.openweathermap.org/data/2.5/weather?q=Vancouver,ca&APPID=";
+        String theURL = vancouverweatherquery + apikey;
+        return new URL(theURL);
+    }
+
+    private double parsejson(StringBuilder sb) throws ParseException {
+        Object obj = new JSONParser().parse(String.valueOf(sb));
+        JSONObject jo = (JSONObject) obj;
+
+        JSONObject jo1 = (JSONObject) jo.get("main");
+
+        double t = (double) jo1.get("temp");
+        System.out.println(t);
+        return t;
+    }
+
+    private void closebr(BufferedReader br) throws IOException {
+        if (br != null) {
+            br.close();
+        }
+    }
+
 
     public Weather() throws IOException {
         this.temp = importWeatherInfo();
