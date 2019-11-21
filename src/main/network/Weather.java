@@ -79,17 +79,6 @@ public class Weather implements WeatherObserver {
         this.temp = importWeatherInfo();
     }
 
-//    private double parseJSON(StringBuilder sb) throws ParseException {
-//        Object obj = new JSONParser().parse(String.valueOf(sb));
-//        JSONObject jo = (JSONObject) obj;
-//
-//        JSONObject jo1 = (JSONObject) jo.get("main");
-//
-//        Double t = (Double) jo1.get("temp");
-//        System.out.println(t);
-//        this.temp = t;
-//        return temp;
-//    }
 
     @Override
     public void update(ToDoList list) {

@@ -9,7 +9,6 @@ import model.SchoolTask;
 import model.ToDoList;
 import network.Weather;
 import observer.Subject;
-import observer.WeatherObserver;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -156,17 +155,19 @@ public class ManageToDoList extends Subject {
 
     // EFFECTS: prints todolist in two ways
     private void optionPrint() {
-        System.out.println("To view all tasks press [1]");
-        System.out.println("To view tasks by courses press [2]");
+//        System.out.println("To view all tasks press [1]");
+//        System.out.println("To view tasks by courses press [2]");
 
-        option = scanner.nextLine();
-        if (option.equals("1")) {
-            myList.printList();
-        } else if (option.equals("2")) {
-            course.printCourses();
-        } else {
-            System.out.println("This is not a valid option");
-        }
+//        option = scanner.nextLine();
+        myList.printList();
+
+//        if (option.equals("1")) {
+//            myList.printList();
+//        } else if (option.equals("2")) {
+//            course.printCourses();
+//        } else {
+//            System.out.println("This is not a valid option");
+//        }
     }
 
 }

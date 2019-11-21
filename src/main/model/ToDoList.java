@@ -18,7 +18,6 @@ public class ToDoList extends Subject implements Loadable, Saveable {
 
     private ArrayList<Task> tasks;
     public ArrayList<Course> courses;
-    public Weather weather;
     private Course course;
     private int maxincomplete = 5;
 
