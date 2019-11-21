@@ -15,6 +15,8 @@ public class GUI extends JFrame implements ActionListener {
     private ToDoList list;
     private JTextField field1;
     private JTextField field2;
+    private JTextField field3;
+
 
     public GUI() throws IOException {
         super("ToDoList UI");
@@ -57,6 +59,8 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+
         if (e.getActionCommand().equals("add")) {
             JLabel label1 = new JLabel("school or general?");
             JLabel label2 = new JLabel("enter task name:");
@@ -74,11 +78,15 @@ public class GUI extends JFrame implements ActionListener {
 
         if (e.getActionCommand().equals("addnow")) {
             if (field1.getText().equals("general")) {
-                JLabel label3 = new JLabel("enter task category:");
-                JTextField field3 = new JTextField(7);
-                add(label3);
-                add(field3);
-                list.addGeneralTask(field2.getText(), field3.getText(), false, "general");
+//                JLabel label3 = new JLabel("enter your task's category:");
+//                JTextField field3 = new JTextField(7);
+//                JButton submitButton = new JButton("submit general task");
+//                add(label3);
+//                add(field3);
+                list.addGeneralTask(field2.getText(), "", false, "general");
+//                add(submitButton);
+//                submitButton.setActionCommand("submit general task");
+//                submitButton.addActionListener(this);
             } else if (field1.getText().equals("school")) {
                 try {
                     list.addSchoolTask(field2.getText(), "", false, "school");
@@ -87,5 +95,9 @@ public class GUI extends JFrame implements ActionListener {
                 }
             }
         }
+
+//        if (e.getActionCommand().equals("submit general task")) {
+//            list.addGeneralTask(field2.getText(), field3.getText(), false, "general");
+//        }
     }
 }
