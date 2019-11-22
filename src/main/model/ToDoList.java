@@ -16,7 +16,7 @@ import java.util.*;
 
 public class ToDoList extends Subject implements Loadable, Saveable {
 
-    private ArrayList<Task> tasks;
+    public ArrayList<Task> tasks;
     public ArrayList<Course> courses;
     private Course course;
     private int maxincomplete = 5;
