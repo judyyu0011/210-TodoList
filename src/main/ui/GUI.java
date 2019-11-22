@@ -1,9 +1,9 @@
 package ui;
 
+import exceptions.CannotFindTask;
 import model.Task;
 import model.ToDoList;
 
-import javax.management.remote.rmi._RMIConnection_Stub;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -33,7 +33,7 @@ public class GUI extends JFrame implements ActionListener {
 
         list = new ToDoList();
 
-        this.getContentPane().setBackground(new Color(244,194,194));
+        this.getContentPane().setBackground(new Color(194,210,244));
 
         addButtons();
         pack();
@@ -57,35 +57,54 @@ public class GUI extends JFrame implements ActionListener {
         JButton printBtn = new JButton("See list");
         printBtn.setActionCommand("print");
 
-        JButton quitBtn = new JButton("Leave");
-        quitBtn.setActionCommand("quit");
-
 
         addBtn.addActionListener(this);
         completeBtn.addActionListener(this);
         removeBtn.addActionListener(this);
         printBtn.addActionListener(this);
-        quitBtn.addActionListener(this);
 
         add(addBtn, BorderLayout.NORTH);
         add(completeBtn, BorderLayout.NORTH);
         add(removeBtn);
         add(printBtn);
-        add(quitBtn);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         add(e);
 
-        if (e.getActionCommand().equals("print")) {
-            for (Task t : list.tasks) {
-                JLabel task = new JLabel("- name: " + t.getName() + "; state: " + t.completeOrNot()
-                        + "; type: " + t.getType());
-                add(task);
+        remove(e);
+
+        print(e);
+    }
+
+    private void remove(ActionEvent e) {
+        if (e.getActionCommand().equals("remove")) {
+            JLabel remove = new JLabel("Which task would you like to remove?");
+            field1 = new JTextField(7);
+            add(remove);
+            add(field1);
+            JButton removenowBtn = new JButton("remove now!");
+            add(removenowBtn);
+            removenowBtn.setActionCommand("remove now");
+            removenowBtn.addActionListener(this);
+        }
+
+        removeNow(e);
+    }
+
+    private void removeNow(ActionEvent e) {
+        if (e.getActionCommand().equals("remove now")) {
+            try {
+                list.removeTask(field1.getText());
+            } catch (CannotFindTask cft) {
+                cft.printStackTrace();
+                JLabel notask = new JLabel("This task is not in your list");
+                add(notask);
             }
         }
     }
+
 
     private void add(ActionEvent e) {
 
@@ -105,10 +124,16 @@ public class GUI extends JFrame implements ActionListener {
         }
 
         addNow(e);
+    }
 
-//        if (e.getActionCommand().equals("submit general task")) {
-//            list.addGeneralTask(field2.getText(), field3.getText(), false, "general");
-//        }
+    private void print(ActionEvent e) {
+        if (e.getActionCommand().equals("print")) {
+            for (Task t : list.tasks) {
+                JLabel task = new JLabel("- name: " + t.getName() + "; state: " + t.completeOrNot()
+                        + "; type: " + t.getType());
+                add(task);
+            }
+        }
     }
 
     private void addNow(ActionEvent e) {
