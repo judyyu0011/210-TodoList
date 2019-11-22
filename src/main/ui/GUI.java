@@ -1,15 +1,20 @@
 package ui;
 
+import com.sun.tools.javac.comp.Flow;
+import exceptions.CannotAlterTask;
 import exceptions.CannotFindTask;
 import model.Task;
 import model.ToDoList;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class GUI extends JFrame implements ActionListener {
@@ -29,6 +34,16 @@ public class GUI extends JFrame implements ActionListener {
         setLayout(new FlowLayout());
 
         label = new JLabel("Welcome to your todo list! What would you like to do?");
+
+        ImageIcon icon = new ImageIcon("test.jpg");
+        JLabel pic = new JLabel();
+        pic.setIcon(icon);
+        add(pic);
+
+//        BufferedImage myPicture = ImageIO.read(new File("butterfly.jpg"));
+//        JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+//        add(picLabel);
+
         add(label, BorderLayout.NORTH);
 
         list = new ToDoList();
@@ -73,6 +88,29 @@ public class GUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         add(e);
 
+        if (e.getActionCommand().equals("mark complete")) {
+            JLabel markComplete = new JLabel("Which task would you like to mark complete?");
+            field1 = new JTextField(7);
+            add(markComplete);
+            add(field1);
+            JButton markcompletenowBtn = new JButton("mark complete now!");
+            add(markcompletenowBtn);
+            markcompletenowBtn.setActionCommand("mark complete now");
+            markcompletenowBtn.addActionListener(this);
+        }
+
+        if (e.getActionCommand().equals("mark complete now")) {
+            try {
+                list.markComplete(field1.getText());
+                JLabel completed = new JLabel(field1.getText() + " has been marked complete");
+                add(completed);
+            } catch (CannotAlterTask cannotAlterTask) {
+                cannotAlterTask.printStackTrace();
+                JLabel notask = new JLabel("This task is already cimplete");
+                add(notask);
+            }
+        }
+
         remove(e);
 
         print(e);
@@ -97,6 +135,8 @@ public class GUI extends JFrame implements ActionListener {
         if (e.getActionCommand().equals("remove now")) {
             try {
                 list.removeTask(field1.getText());
+                JLabel removed = new JLabel(field1.getText() + " has been removed");
+                add(removed);
             } catch (CannotFindTask cft) {
                 cft.printStackTrace();
                 JLabel notask = new JLabel("This task is not in your list");
