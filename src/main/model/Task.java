@@ -11,6 +11,7 @@ public abstract class Task {
 
     protected ToDoList list;
 
+    // EFFECTS: constructs a task with name, state and type
     public Task(String name, Boolean state, String type) {
         this.name = name;
         this.state = state;
@@ -40,15 +41,8 @@ public abstract class Task {
     }
 
 
-//    public void setName(String n) {
-//        this.name = n;
-//    }
-
-//    public void setStateFalse() {
-//        this.state = false;
-//    }
-
-
+    // MODIFIES: this
+    // EFFECTS: set state true if state is false, and return true; throws exception if state is already true
     public boolean changeStateToTrue(String taskName) throws TaskAlreadyComplete {
         if (name.equals(taskName)) {
             if (state) {
@@ -61,6 +55,8 @@ public abstract class Task {
         return false;
     }
 
+    // REQUIRES: state is not null
+    // EFFECTS: return appropriate string given state
     public String completeOrNot() {
         if (getState()) {
             return "completed";
@@ -69,7 +65,8 @@ public abstract class Task {
         }
     }
 
+    // EFFECTS: prints a task
     public abstract void printTask();
 
 }
-//
+

@@ -9,17 +9,17 @@ public class Subject {
 
     private List<WeatherObserver> weatherObservers;
 
-    public Subject() {
+    protected Subject() {
         weatherObservers = new ArrayList<>();
     }
 
-    public void addObserver(WeatherObserver o) {
+    protected void addObserver(WeatherObserver o) {
         if (!weatherObservers.contains(o)) {
             weatherObservers.add(o);
         }
     }
 
-    public void notifyObservers(ToDoList list) {
+    protected void notifyObservers(ToDoList list) {
         for (WeatherObserver o : weatherObservers) {
             o.update(list);
         }

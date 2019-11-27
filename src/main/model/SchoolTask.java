@@ -4,23 +4,16 @@ public class SchoolTask extends Task {
 
     Course course;
 
+    // EFFECTS: constructs a school task
     public SchoolTask(String name, Course course, Boolean state, String type) {
         super(name, state, type);
         this.course = course;
     }
 
-    // getters
+
     public String getCourseCode() {
         return course.code;
     }
-
-
-
-    // setters
-//    public void setCourse(String c) {
-//        this.course = c;
-//    }
-
 
 
     // EFFECTS: print out the task's information
@@ -30,16 +23,9 @@ public class SchoolTask extends Task {
                 + "; type: " + getType());
     }
 
+    // EFFECTS: return the course code
     @Override
     public String toString() {
         return course.code;
     }
-
-
-
-//    public void addTask(String name, String course, SchoolTask t) {
-//        this.name = name;
-//        this.course = course;
-//    }
-
 }

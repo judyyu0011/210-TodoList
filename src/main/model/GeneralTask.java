@@ -2,20 +2,17 @@ package model;
 
 public class GeneralTask extends Task {
 
+    // EFFECTS: constructs a general task
     public GeneralTask(String name, String category,  Boolean state, String type) {
         super(name, state, type);
         this.category = category;
     }
 
-    // getters
+
     public String getCategory() {
         return category;
     }
 
-    // setters
-//    public void setCategory(String c) {
-//        this.category = c;
-//    }
 
     // EFFECTS: print out the task's information
     @Override

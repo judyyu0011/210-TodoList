@@ -29,7 +29,7 @@ public class ToDoList extends Subject implements Loadable, Saveable {
 
 
     // MODIFIES: this
-    // EFFECTS: add a SchoolTask to the todolist
+    // EFFECTS: add a school task to the todolist
     public void addSchoolTask(String name, String courseCode, Boolean state, String type) throws IOException {
         Task t;
         course = new Course("");
@@ -44,9 +44,9 @@ public class ToDoList extends Subject implements Loadable, Saveable {
         t.setType("school");
         tasks.add(t);
         taskIsAdded(name);
-//        addCourse(course, t);
     }
 
+    // EFFECTS: return true if course can be found in list of courses
     public boolean courseExists(String courseCode) {
         for (Course c : courses) {
             if (c.getCourseCode().equals(courseCode)) {
@@ -65,8 +65,9 @@ public class ToDoList extends Subject implements Loadable, Saveable {
         taskIsAdded(name);
     }
 
-    // MODIFIES: state of a task
-    // EFFECTS: changes state of the task to true if it exists and its state is false
+    // MODIFIES: this
+    // EFFECTS: changes state of the task to true if it exists and its state is false,
+    //          throw exception if task cannot be found
     public void markComplete(String taskName) throws CannotAlterTask {
         if (doesNotContainTask(taskName)) {
             throw new CannotFindTask();
@@ -81,6 +82,7 @@ public class ToDoList extends Subject implements Loadable, Saveable {
 
     // MODIFIES: this
     // EFFECTS: remove the task from the list, if the task is in the list
+    //          throw exception if task cannot be found
     public void removeTask(String taskName) throws CannotFindTask {
         if (doesNotContainTask(taskName)) {
             throw new CannotFindTask();
@@ -130,10 +132,6 @@ public class ToDoList extends Subject implements Loadable, Saveable {
         }
     }
 
-//    @Override
-//    public String toString() {
-//        return "hi";
-//    }
 
     // EFFECTS: prints that the task is added
     private void taskIsAdded(String taskName) {
@@ -150,10 +148,12 @@ public class ToDoList extends Subject implements Loadable, Saveable {
         return tasks.size();
     }
 
+    // EFFECTS: return the ith task in the list
     public Task get(int i) {
         return tasks.get(i);
     }
 
+    // EFFECTS: load tasks from data file
     @Override
     public void load(String file) throws IOException {
         tasks = new ArrayList<>();
@@ -200,6 +200,7 @@ public class ToDoList extends Subject implements Loadable, Saveable {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
+    // EFFECTS: save tasks to data file
     @Override
     public void save(String file) throws FileNotFoundException, UnsupportedEncodingException {
         List<String> lines = new ArrayList<>();

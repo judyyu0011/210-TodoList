@@ -76,8 +76,6 @@ public class ManageToDoList extends Subject {
         System.out.println("You selected " + option);
     }
 
-    // MODIFIES: this
-    // EFFECTS: scan for user input, then add task to the list
     private void optionAdd() {
 
         System.out.println("Enter the task you would like to add");
@@ -96,7 +94,7 @@ public class ManageToDoList extends Subject {
         }
     }
 
-    public void addTask() throws TooManyTasksIncomplete, IOException {
+    private void addTask() throws TooManyTasksIncomplete, IOException {
         String course;
         String category;
         String type = "";
@@ -136,8 +134,6 @@ public class ManageToDoList extends Subject {
     }
 
 
-    // MODIFIES: this
-    // EFFECTS: scan for user input, then remove task from the list
     private void optionRemove() {
         myList.printList();
 
@@ -153,21 +149,8 @@ public class ManageToDoList extends Subject {
         }
     }
 
-    // EFFECTS: prints todolist in two ways
     private void optionPrint() {
-//        System.out.println("To view all tasks press [1]");
-//        System.out.println("To view tasks by courses press [2]");
-
-//        option = scanner.nextLine();
         myList.printList();
-
-//        if (option.equals("1")) {
-//            myList.printList();
-//        } else if (option.equals("2")) {
-//            course.printCourses();
-//        } else {
-//            System.out.println("This is not a valid option");
-//        }
     }
 
 }

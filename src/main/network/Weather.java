@@ -17,9 +17,9 @@ public class Weather implements WeatherObserver {
     private static String apikey = "240788122919edf7542fcf22138ca522";
     private static String vancouverweatherquery =
             "http://api.openweathermap.org/data/2.5/weather?q=Vancouver,ca&APPID=";
-    public double temp;
+    private double temp;
 
-    public double importWeatherInfo() throws MalformedURLException, IOException {
+    private double importWeatherInfo() throws MalformedURLException, IOException {
 
         BufferedReader br = null;
 
@@ -37,7 +37,6 @@ public class Weather implements WeatherObserver {
                 sb.append(System.lineSeparator());
             }
 
-//            System.out.println(sb);
             return parsejson(sb);
 
         } catch (ParseException e) {
@@ -74,15 +73,14 @@ public class Weather implements WeatherObserver {
         }
     }
 
-
+    // EFFECTS: constructs a weather object, with temperature imported from internet
     public Weather() throws IOException {
         this.temp = importWeatherInfo();
     }
 
-
+    // EFFECTS: prints out the current temperature
     @Override
     public void update(ToDoList list) {
-//        list.addGeneralTask("Put on jacket", "everyday", false, "general");
         System.out.println("The current temperature is " + temp);
     }
 }
