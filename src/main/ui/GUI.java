@@ -62,20 +62,20 @@ public class GUI extends JFrame implements ActionListener {
         JButton printBtn = new JButton("See list");
         printBtn.setActionCommand("print");
 
-//        JButton saveBtn = new JButton("Save");
-//        printBtn.setActionCommand("save");
+        JButton saveBtn = new JButton("Quit");
+        saveBtn.setActionCommand("save");
 
         addBtn.addActionListener(this);
         completeBtn.addActionListener(this);
         removeBtn.addActionListener(this);
         printBtn.addActionListener(this);
-//        saveBtn.addActionListener(this);
+        saveBtn.addActionListener(this);
 
         add(addBtn);
         add(completeBtn);
         add(removeBtn);
         add(printBtn);
-//        add(saveBtn);
+        add(saveBtn);
     }
 
     @Override
@@ -88,13 +88,14 @@ public class GUI extends JFrame implements ActionListener {
 
         print(e);
 
-//        if (e.getActionCommand().equals("save")) {
-//            try {
-//                list.save("TodoListData");
-//            } catch (FileNotFoundException | UnsupportedEncodingException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
+        if (e.getActionCommand().equals("save")) {
+            try {
+                list.save("TodoListData");
+            } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+                ex.printStackTrace();
+            }
+            System.exit(0);
+        }
     }
 
     private void complete(ActionEvent e) {
