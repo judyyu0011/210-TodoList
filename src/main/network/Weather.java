@@ -24,7 +24,8 @@ public class Weather implements WeatherObserver {
         BufferedReader br = null;
 
         try {
-            URL url = makeURL();
+            String theURL = vancouverweatherquery + apikey;
+            URL url = new URL(theURL);
             br = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String line;
@@ -36,14 +37,28 @@ public class Weather implements WeatherObserver {
                 sb.append(line);
                 sb.append(System.lineSeparator());
             }
+            System.out.println(sb);
 
-            return parsejson(sb);
+//            return parsejson(sb);
+
+            Object obj = new JSONParser().parse(String.valueOf(sb));
+            JSONObject jo = (JSONObject) obj;
+
+            JSONObject jo1 = (JSONObject) jo.get("main");
+
+            double t = (double) jo1.get("temp");
+            System.out.println(t);
+            return t;
+
+//            this.temp = t;
 
         } catch (ParseException e) {
             e.printStackTrace();
         } finally {
 
-            closebr(br);
+            if (br != null) {
+                br.close();
+            }
         }
         return 0.0;
     }
