@@ -6,8 +6,10 @@ import model.Task;
 import model.ToDoList;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
@@ -17,76 +19,148 @@ import java.io.UnsupportedEncodingException;
 public class GUI extends JFrame implements ActionListener {
 
     private ToDoList list;
-    private JTextField field1;
-    private JTextField field2;
+    private JTextField addTypeField;
+    private JTextField addField;
+    private JTextField completeField;
+    private JTextField removeField;
+    private JPanel tablePanel;
 
     private GUI() throws IOException {
-        super("ToDoList UI");
+        super("ToDoList");
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-        setLayout(new FlowLayout());
+        setLayout(new BorderLayout());
+//        setPreferredSize(new Dimension(400, 90));
 
-        JLabel label = new JLabel("Welcome to your todo list! What would you like to do?");
+        Panel headPanel = new Panel(new FlowLayout());
 
+        JLabel label = new JLabel("Welcome to your To-Do List! What would you like to do?");
 
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("todolist-icon.png").getImage()
                 .getScaledInstance(50, 50, Image.SCALE_DEFAULT));
         JLabel picLabel = new JLabel();
         picLabel.setIcon(imageIcon);
-        add(picLabel);
 
-        add(label, BorderLayout.NORTH);
+        headPanel.add(picLabel);
+        headPanel.add(label);
+
+        getContentPane().add(headPanel, BorderLayout.PAGE_START);
+
+        Panel buttonPanel = new Panel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        addButtons(buttonPanel);
+
+        getContentPane().add(buttonPanel, BorderLayout.LINE_START);
+
 
         list = new ToDoList();
+        list.load("TodoListData");
+
+        String[] columnNames = {"Name", "State", "Type",};
+        String [][] data = new String[list.tasks.size()][3];
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][0] = t.getName();
+        }
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][1] = t.completeOrNot();
+        }
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][2] = t.getType();
+        }
+
+        JTable table = new JTable(data, columnNames);
+        tablePanel = new JPanel();
+        tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+        tablePanel.setBorder(new EmptyBorder(0, 13, 0, 0));
+        tablePanel.add(table.getTableHeader());
+        tablePanel.add(table);
+        getContentPane().add(tablePanel, BorderLayout.CENTER);
+        tablePanel.setBackground(new Color(194,210,244));
+
+//        listPanel = new JPanel();
+//        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+//        listPanel.setBorder(new EmptyBorder(0, 13, 0, 0));
+//        listPanel.setBackground(new Color(194,210,244));
+//        for (Task t : list.tasks) {
+//            JLabel task = new JLabel("Name: " + t.getName() + "     state: " + t.completeOrNot()
+//                    + "     type: " + t.getType());
+//            listPanel.add(task);
+//        }
+//
+//        getContentPane().add(listPanel, BorderLayout.CENTER);
+
 
         this.getContentPane().setBackground(new Color(194,210,244));
 
-        list.load("TodoListData");
-
-        addButtons();
         pack();
         setVisible(true);
+//        setResizable(false);
     }
 
-    private void addButtons() {
+    private void addButtons(Panel panel) {
+
+        JPanel addTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        addTypeField = new JTextField(7);
+        JLabel addTypeLabel = new JLabel("Enter 'general or 'school'");
+        addTypePanel.add(addTypeField);
+        addTypePanel.add(addTypeLabel);
+
+        JPanel addPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton addBtn = new JButton("Add");
+        addField = new JTextField(7);
         addBtn.setActionCommand("add");
+        addPanel.add(addField);
+        addPanel.add(addBtn);
 
+        JPanel completePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton completeBtn = new JButton("Mark complete");
+        completeField = new JTextField(7);
         completeBtn.setActionCommand("mark complete");
+        completePanel.add(completeField);
+        completePanel.add(completeBtn);
 
+        JPanel removePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton removeBtn = new JButton("Remove");
+        removeField = new JTextField(7);
         removeBtn.setActionCommand("remove");
+        removePanel.add(removeField);
+        removePanel.add(removeBtn);
 
-        JButton printBtn = new JButton("See list");
-        printBtn.setActionCommand("print");
-
-        JButton saveBtn = new JButton("Quit");
-        saveBtn.setActionCommand("save");
+        JPanel quitPanel = new JPanel(new FlowLayout());
+        JButton quitBtn = new JButton("Quit");
+        quitBtn.setActionCommand("save");
+        quitPanel.add(quitBtn);
 
         addBtn.addActionListener(this);
         completeBtn.addActionListener(this);
         removeBtn.addActionListener(this);
-        printBtn.addActionListener(this);
-        saveBtn.addActionListener(this);
+        quitBtn.addActionListener(this);
 
-        add(addBtn);
-        add(completeBtn);
-        add(removeBtn);
-        add(printBtn);
-        add(saveBtn);
+        panel.add(addTypePanel);
+        panel.add(addPanel);
+        panel.add(completePanel);
+        panel.add(removePanel);
+        panel.add(quitPanel);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         add(e);
 
         complete(e);
 
         remove(e);
 
-        print(e);
+        try {
+            refresh();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
         if (e.getActionCommand().equals("save")) {
             try {
@@ -96,29 +170,17 @@ public class GUI extends JFrame implements ActionListener {
             }
             System.exit(0);
         }
+
     }
+
 
     private void complete(ActionEvent e) {
+
         if (e.getActionCommand().equals("mark complete")) {
-            JLabel markComplete = new JLabel("Which task would you like to mark complete?");
-            field1 = new JTextField(7);
-            add(markComplete);
-            add(field1);
-            JButton markcompletenowBtn = new JButton("mark complete now!");
-            add(markcompletenowBtn);
-            markcompletenowBtn.setActionCommand("mark complete now");
-            markcompletenowBtn.addActionListener(this);
-        }
-
-        completeNow(e);
-    }
-
-    private void completeNow(ActionEvent e) {
-        if (e.getActionCommand().equals("mark complete now")) {
             try {
-                list.markComplete(field1.getText());
+                list.markComplete(completeField.getText());
                 JOptionPane.showMessageDialog(null,
-                        field1.getText() + " has been marked complete");
+                        completeField.getText() + " has been marked complete");
             } catch (CannotAlterTask cannotAlterTask) {
                 cannotAlterTask.printStackTrace();
                 JOptionPane.showMessageDialog(null, "This task is already complete");
@@ -126,26 +188,13 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
+
     private void remove(ActionEvent e) {
+
         if (e.getActionCommand().equals("remove")) {
-            JLabel remove = new JLabel("Which task would you like to remove?");
-            field1 = new JTextField(7);
-            add(remove);
-            add(field1);
-            JButton removenowBtn = new JButton("remove now!");
-            add(removenowBtn);
-            removenowBtn.setActionCommand("remove now");
-            removenowBtn.addActionListener(this);
-        }
-
-        removeNow(e);
-    }
-
-    private void removeNow(ActionEvent e) {
-        if (e.getActionCommand().equals("remove now")) {
             try {
-                list.removeTask(field1.getText());
-                JOptionPane.showMessageDialog(null, field1.getText() + " has been removed");
+                list.removeTask(removeField.getText());
+                JOptionPane.showMessageDialog(null, removeField.getText() + " has been removed");
             } catch (CannotFindTask cft) {
                 cft.printStackTrace();
                 JOptionPane.showMessageDialog(null, "This task is not in your list");
@@ -154,54 +203,75 @@ public class GUI extends JFrame implements ActionListener {
     }
 
 
+
     private void add(ActionEvent e) {
 
         if (e.getActionCommand().equals("add")) {
-            JLabel label1 = new JLabel("school or general?");
-            JLabel label2 = new JLabel("enter task name:");
-            field1 = new JTextField(5);
-            field2 = new JTextField(10);
-            add(label1);
-            add(field1);
-            add(label2);
-            add(field2);
-            JButton addnowBtn = new JButton("add now!");
-            add(addnowBtn);
-            addnowBtn.setActionCommand("addnow");
-            addnowBtn.addActionListener(this);
-        }
-
-        addNow(e);
-    }
-
-    private void print(ActionEvent e) {
-        if (e.getActionCommand().equals("print")) {
-            if (list.tasks.size() == 0) {
-                JOptionPane.showMessageDialog(null, "Your list is empty!");
-            }
-
-            for (Task t : list.tasks) {
-                JLabel task = new JLabel("- name: " + t.getName() + "; state: " + t.completeOrNot()
-                        + "; type: " + t.getType());
-                add(task);
-            }
-        }
-    }
-
-    private void addNow(ActionEvent e) {
-        if (e.getActionCommand().equals("addnow")) {
-            if (field1.getText().equals("general")) {
-                list.addGeneralTask(field2.getText(), "", false, "general");
-                JOptionPane.showMessageDialog(null, "Your task is added!");
-            } else if (field1.getText().equals("school")) {
+            if (addTypeField.getText().equals("general")) {
+                list.addGeneralTask(addField.getText(), "", false, "general");
+                JOptionPane.showMessageDialog(null, "Your general task is added!");
+            } else if (addTypeField.getText().equals("school")) {
                 try {
-                    list.addSchoolTask(field2.getText(), "", false, "school");
-                    JOptionPane.showMessageDialog(null, "Your task is added!");
+                    list.addSchoolTask(addField.getText(), "", false, "school");
+                    JOptionPane.showMessageDialog(null, "Your school task is added!");
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "This is not a valid type");
             }
+
         }
+    }
+
+    private void refresh() throws IOException {
+        list.save("TodoListData");
+        getContentPane().remove(tablePanel);
+        getContentPane().revalidate();
+        getContentPane().repaint();
+
+        list = new ToDoList();
+        list.load("TodoListData");
+
+        String[] columnNames = {"Name", "State", "Type",};
+        String [][] data = new String[list.tasks.size()][3];
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][0] = t.getName();
+        }
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][1] = t.completeOrNot();
+        }
+        for (int i = 0; i < list.tasks.size(); i++) {
+            Task t = list.tasks.get(i);
+            data[i][2] = t.getType();
+        }
+
+        JTable table = new JTable(data, columnNames);
+        tablePanel = new JPanel();
+        tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
+        tablePanel.setBorder(new EmptyBorder(0, 13, 0, 0));
+        tablePanel.add(table.getTableHeader());
+        tablePanel.add(table);
+        getContentPane().add(tablePanel, BorderLayout.CENTER);
+        tablePanel.setBackground(new Color(194,210,244));
+
+        getContentPane().add(tablePanel, BorderLayout.CENTER);
+
+//        list.save("TodoListData");
+//
+//        listPanel = new JPanel();
+//        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+//        list = new ToDoList();
+//        list.load("TodoListData");
+//
+//        for (Task t : list.tasks) {
+//            JLabel task = new JLabel("Name: " + t.getName() + "     state: " + t.completeOrNot()
+//                    + "     type: " + t.getType());
+//            listPanel.add(task);
+//        }
+//        getContentPane().add(listPanel, BorderLayout.CENTER);
     }
 
     public static void main(String[] args) throws IOException {

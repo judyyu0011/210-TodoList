@@ -137,7 +137,7 @@ public class ManageToDoList extends Subject {
     private void optionRemove() {
         myList.printList();
 
-        System.out.println("Enter the task you would like to remove");
+        System.out.println("Enter the task   would like to remove");
         name = scanner.nextLine();
         try {
             myList.removeTask(name);
