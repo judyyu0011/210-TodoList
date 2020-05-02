@@ -4,6 +4,7 @@ import exceptions.CannotAlterTask;
 import exceptions.CannotFindTask;
 import model.Task;
 import model.ToDoList;
+import network.Weather;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -15,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 
 public class GUI extends JFrame implements ActionListener {
 
@@ -31,7 +33,7 @@ public class GUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
         setLayout(new BorderLayout());
-//        setPreferredSize(new Dimension(400, 90));
+//        setPreferredSize(new Dimension(10000, 300));
 
         Panel headPanel = new Panel(new FlowLayout());
 
@@ -92,9 +94,15 @@ public class GUI extends JFrame implements ActionListener {
 //        }
 //
 //        getContentPane().add(listPanel, BorderLayout.CENTER);
+        Weather weather = new Weather();
+        DecimalFormat df = new DecimalFormat("#.#");
+        JLabel tempLabel = new JLabel("Vancouver: " + df.format(weather.temp - 273.15) + "\u00B0" + "C");
+        JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        tempPanel.add(tempLabel);
+        tempPanel.setBackground(new Color(194,210,244));
+        getContentPane().add(tempPanel, BorderLayout.PAGE_END);
 
-
-        this.getContentPane().setBackground(new Color(194,210,244));
+        getContentPane().setBackground(new Color(194,210,244));
 
         pack();
         setVisible(true);

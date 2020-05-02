@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 //import java.text.ParseException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import model.ToDoList;
@@ -26,7 +27,7 @@ public class Weather implements WeatherObserver {
     private static String apikey = "240788122919edf7542fcf22138ca522";
     private static String vancouverweatherquery =
             "http://api.openweathermap.org/data/2.5/weather?q=Vancouver,ca&APPID=";
-    private double temp;
+    public double temp;
 
     private double importWeatherInfo() throws IOException {
 
@@ -72,15 +73,6 @@ public class Weather implements WeatherObserver {
         return 0;
     }
 
-    private URL makeURL() throws MalformedURLException {
-        String apikey = "240788122919edf7542fcf22138ca522";
-        String vancouverweatherquery =
-                "http://api.openweathermap.org/data/2.5/weather?q=Vancouver,ca&APPID=";
-        String theURL = vancouverweatherquery + apikey;
-        return new URL(theURL);
-    }
-
-
 
     private double parsejson(StringBuilder sb) throws ParseException {
         Object obj = new JSONParser().parse(String.valueOf(sb));
@@ -97,22 +89,12 @@ public class Weather implements WeatherObserver {
 //            }
 //        }
 //
-//        String t = listdata.get(3);
-
-
-
-
+//        String t = listdata.get(3)
         double t = (double) jo1.get("temp");
-//        String t = (String) jo1.get(1);
-//        System.out.println(t);
+
         return t;
     }
 
-    private void closebr(BufferedReader br) throws IOException {
-        if (br != null) {
-            br.close();
-        }
-    }
 
     // EFFECTS: constructs a weather object, with temperature imported from internet
     public Weather() throws IOException {
@@ -122,7 +104,8 @@ public class Weather implements WeatherObserver {
     // EFFECTS: prints out the current temperature
     @Override
     public void update(ToDoList list) {
-        System.out.println("The current temperature is " + temp);
+        DecimalFormat df = new DecimalFormat("#.#");
+        System.out.println("The current temperature is " + df.format(temp - 273.15));
     }
 }
 
