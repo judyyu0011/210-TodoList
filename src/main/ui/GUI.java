@@ -35,21 +35,23 @@ public class GUI extends JFrame implements ActionListener {
         setLayout(new BorderLayout());
 //        setPreferredSize(new Dimension(10000, 300));
 
-        Panel headPanel = new Panel(new FlowLayout());
+        JPanel headPanel = new JPanel(new FlowLayout());
 
-        JLabel label = new JLabel("Welcome to your To-Do List! What would you like to do?");
+        JLabel label = new JLabel("Welcome to your To-Do List!");
 
         ImageIcon imageIcon = new ImageIcon(new ImageIcon("todolist-icon.png").getImage()
                 .getScaledInstance(50, 50, Image.SCALE_DEFAULT));
         JLabel picLabel = new JLabel();
         picLabel.setIcon(imageIcon);
 
+        headPanel.setBorder(new EmptyBorder(0, 0, 13, 0));
+        headPanel.setBackground(new Color(194,210,244));
         headPanel.add(picLabel);
         headPanel.add(label);
 
         getContentPane().add(headPanel, BorderLayout.PAGE_START);
 
-        Panel buttonPanel = new Panel();
+        JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         addButtons(buttonPanel);
 
@@ -109,7 +111,7 @@ public class GUI extends JFrame implements ActionListener {
 //        setResizable(false);
     }
 
-    private void addButtons(Panel panel) {
+    private void addButtons(JPanel panel) {
 
         JPanel addTypePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         addTypeField = new JTextField(7);
